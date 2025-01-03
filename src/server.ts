@@ -5,9 +5,11 @@ import mongoose from 'mongoose';
 import dotenv from "dotenv"
 dotenv.config();
 import userRoutes from "./routes/UserRouter"
+import hostelRoutes from "./routes/HostelRouter"
+import chatRoutes from "./routes/ChatRoutes"
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3050;
 
 // Set up your routes and middleware here
 app.use(cors({origin: "*"}));
@@ -21,6 +23,8 @@ const connection = mongoose.connection
 connection.once('open', () => { console.log('Database running Successfully') });
 
 app.use("/auth", userRoutes)
+app.use("/hostels", hostelRoutes)
+app.use("/chats", chatRoutes)
 
 // Run Server
 app.listen(port, () => {

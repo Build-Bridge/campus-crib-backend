@@ -24,6 +24,7 @@ class UserController{
         try{
             let data = req.body;
             let response = await this.service.signIn(data);
+            
              successResponse(response, res)
         }
         catch(err: any){
@@ -40,6 +41,33 @@ class UserController{
         }
         catch(err: any){
              errorResponse(err.message, res);
+        }
+    }
+
+    async updateBookmark(req: Request, res: Response) {
+        try {
+            const userId = req.body.user; // Retrieved from `verifyAuth` middleware
+            const { hostelId, action } = req.body;
+
+            if (!["add", "remove"].includes(action)) {
+                throw new Error("Invalid action. Use 'add' or 'remove'.");
+            }
+
+            const bookmarks = await this.service.updateBookmark(userId, hostelId, action as "add" | "remove");
+            successResponse(bookmarks, res);
+        } catch (err: any) {
+            errorResponse(err.message, res);
+        }
+    }
+
+    async getAgentDetailsById(req: Request, res: Response) {
+        try {
+            const {id} = req.params;
+
+            const response = await this.service.getAgentDetailsById(id)
+            successResponse(response, res);
+        } catch (err: any) {
+            errorResponse(err.message, res);
         }
     }
 }

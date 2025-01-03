@@ -6,13 +6,14 @@ import "reflect-metadata";
 import { Service } from "typedi";
 import { IUser } from "../models/user";
 import { Payload } from "../utils/response";
+import HostelRepository from "../repositories/HostelRepository";
 
 
 let jwtSecret = process.env.JWT_SECRET as string;
 
 @Service()
 export class UserServices {
-    constructor(private readonly repo: UserRepository) { };
+    constructor(private readonly repo: UserRepository, private readonly hostelRepo: HostelRepository) { };
 
     generateToken(id: string) {
         let token = jwt.sign({ id }, jwtSecret)
@@ -61,7 +62,7 @@ export class UserServices {
             let token = this.generateToken(String(user._id))
 
             return {
-                data: { user, token },
+                payload: { user, token },
                 message: "Signed up Successfully"
             }
         }
@@ -150,8 +151,13 @@ export class UserServices {
         }
     }
 
-    async getUserById(id: string) {
-
+    async getAgentDetailsById(id: string) {
+        let user = await this.repo.findOne({_id: id})
+        let hostels =await this.hostelRepo.find({user: id})
+        return {
+            payload: {user, hostels},
+            message: "Successful"
+        }
     }
 
     async completeProfile(userId: string, data: any) {
@@ -224,4 +230,12 @@ export class UserServices {
     //         throw Error(err.message);
     //     }
     // }
+
+    async updateBookmark(userId: string, hostelId: string, action: "add" | "remove") {
+        const user = await this.repo.updateBookmark(userId, hostelId, action);
+        if (!user) {
+            throw new Error("User not found or failed to update bookmarks.");
+        }
+        return {payload: user.bookmarkedHostels, message: action === "add" ? "Boomarked Successfully" : "Removed from Bookmark Successfully!"};
+    }
 }

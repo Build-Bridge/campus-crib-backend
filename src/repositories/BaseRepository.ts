@@ -12,7 +12,7 @@ export class BaseRepository<T extends Document> {
   }
 
   async findOne(query: FilterQuery<T>): Promise<T | null> {
-    return this.model.findOne(query).exec();
+    return this.model.findOne(query).populate("user").exec();
   }
 
   async create(data: Partial<T>): Promise<T> {

@@ -2,13 +2,13 @@ import { Response } from "express";
 
 export interface Payload{
   message?: string,
-  data?: any
+  payload?: any
 }
 
 export const successResponse = (payload:  Payload, res: Response) => {
   return res.json({
     message:payload.message || "Successful",
-    data: payload.data,
+    data: payload.payload,
     status:200
   })
 };

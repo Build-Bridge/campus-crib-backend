@@ -1,4 +1,4 @@
-import mongoose, {Document, Schema} from "mongoose";
+import mongoose, {Document, Schema, Types} from "mongoose";
 
 enum UserType{
     BASIC = "BASIC",
@@ -16,6 +16,7 @@ export interface IUser extends Document{
     governmentId?: string,
     schoolId?: string,
     businessRegistration?: string
+    bookmarkedHostels?: Types.ObjectId[]
 }
 
 const userSchema = new Schema<IUser>({
@@ -34,7 +35,8 @@ const userSchema = new Schema<IUser>({
     },
     businessRegistration: {
         type: String
-    }
+    },
+    bookmarkedHostels: [{ type: Schema.Types.ObjectId, ref: "Hostels" }]
 },
 {
     timestamps: true,

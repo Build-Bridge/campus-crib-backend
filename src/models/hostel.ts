@@ -6,7 +6,6 @@ export enum HostelTypes{
     APARTMENTS = "APARTMENTS",
     SUITES = "SUITES"
 }
-
 export interface IHostel extends Document{
     user: Types.ObjectId | string,
     images:string[],
