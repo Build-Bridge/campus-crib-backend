@@ -35,7 +35,20 @@ class ChatRepository {
         });
     }
 
-    async getMessagesByConversation(conversationId: string) {
+
+       async getMessagesByConversation(conversationId: string, userId?: string) {
+        if (userId) {
+            const conversation = await ChatConversations.findOne({
+                participants: { $all: [userId, conversationId] }
+            });
+
+            if (!conversation) {
+                throw new Error("Conversation not found");
+            }
+
+            conversationId = conversation._id.toString();
+        }
+
         return await ChatMessages.find({ conversationId }).sort({ timestamp: 1 });
     }
 

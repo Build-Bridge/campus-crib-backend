@@ -22,8 +22,8 @@ class ChatService {
         return {payload: chatMessage, message: "Message sent Successfully"};
     }
 
-    async getConversationMessages(conversationId: string) {
-        return{payload: await this.chatRepo.getMessagesByConversation(conversationId), message: "Successful"};
+    async getConversationMessages(conversationId: string, userId?: string) {
+        return{payload: await this.chatRepo.getMessagesByConversation(conversationId, userId), message: "Successful"};
     }
 
     async getUserConversations(userId: string) {
