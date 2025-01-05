@@ -7,6 +7,7 @@ dotenv.config();
 import userRoutes from "./routes/UserRouter"
 import hostelRoutes from "./routes/HostelRouter"
 import chatRoutes from "./routes/ChatRoutes"
+import inspectionRoutes from "./routes/inspectionRoutes";
 
 const app = express();
 const port = process.env.PORT || 3050;
@@ -25,6 +26,7 @@ connection.once('open', () => { console.log('Database running Successfully') });
 app.use("/auth", userRoutes)
 app.use("/hostels", hostelRoutes)
 app.use("/chats", chatRoutes)
+app.use("/inspections", inspectionRoutes);
 
 // Run Server
 app.listen(port, () => {
