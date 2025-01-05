@@ -53,8 +53,17 @@ let ChatRepository = class ChatRepository {
             });
         });
     }
-    getMessagesByConversation(conversationId) {
+    getMessagesByConversation(conversationId, userId) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (userId) {
+                const conversation = yield chatConversation_1.default.findOne({
+                    participants: { $all: [userId, conversationId] }
+                });
+                if (!conversation) {
+                    throw new Error("Conversation not found");
+                }
+                conversationId = conversation._id.toString();
+            }
             return yield chatMessages_1.default.find({ conversationId }).sort({ timestamp: 1 });
         });
     }

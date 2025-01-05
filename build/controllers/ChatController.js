@@ -45,7 +45,8 @@ let ChatController = class ChatController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { conversationId } = req.params;
-                const response = yield this.chatService.getConversationMessages(conversationId);
+                const { userId } = req.query;
+                const response = yield this.chatService.getConversationMessages(conversationId, userId);
                 (0, response_1.successResponse)(response, res);
             }
             catch (err) {

@@ -44,9 +44,9 @@ let ChatService = class ChatService {
             return { payload: chatMessage, message: "Message sent Successfully" };
         });
     }
-    getConversationMessages(conversationId) {
+    getConversationMessages(conversationId, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return { payload: yield this.chatRepo.getMessagesByConversation(conversationId), message: "Successful" };
+            return { payload: yield this.chatRepo.getMessagesByConversation(conversationId, userId), message: "Successful" };
         });
     }
     getUserConversations(userId) {
