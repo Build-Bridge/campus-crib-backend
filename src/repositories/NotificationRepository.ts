@@ -1,6 +1,7 @@
-import Notifications, { INotification } from "src/models/notification";
+import { Service } from "typedi";
+import Notifications, { INotification } from "../models/notification";
 import { BaseRepository } from "./BaseRepository";
-import Hostels, { IHostel } from "src/models/hostel";
+
 
 @Service()
 class NotificationRepository extends BaseRepository<INotification>{
