@@ -9,8 +9,17 @@ import hostelRoutes from "./routes/HostelRouter"
 import chatRoutes from "./routes/ChatRoutes"
 import inspectionRoutes from "./routes/inspectionRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
+import SocketServices from './services/SocketServices';
+import { initSocket } from './config/socket';
+import { createServer } from "http";
 
 const app = express();
+// Create HTTP server
+const httpServer = createServer(app);
+
+// Configure Socket.IO
+initSocket(httpServer); // Initialize Socket.IO with the server
+
 const port = process.env.PORT || 3050;
 
 // Set up your routes and middleware here
