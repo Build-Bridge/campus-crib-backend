@@ -8,6 +8,7 @@ import userRoutes from "./routes/UserRouter"
 import hostelRoutes from "./routes/HostelRouter"
 import chatRoutes from "./routes/ChatRoutes"
 import inspectionRoutes from "./routes/inspectionRoutes";
+import notificationRoutes from "./routes/notificationRoutes";
 
 const app = express();
 const port = process.env.PORT || 3050;
@@ -27,6 +28,7 @@ app.use("/auth", userRoutes)
 app.use("/hostels", hostelRoutes)
 app.use("/chats", chatRoutes)
 app.use("/inspections", inspectionRoutes);
+app.use("/notifications", notificationRoutes);
 
 // Run Server
 app.listen(port, () => {
