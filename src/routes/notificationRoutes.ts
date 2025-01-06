@@ -1,15 +1,11 @@
 import { Router } from "express";
 import NotificationController from "../controllers/NotificationController";
-import NotificationService from "../services/NotificationService";
-import NotificationRepository from "../repositories/NotificationRepository";
 import { verifyAuth } from "../middlewares/verifyAuth";
+import Container from "typedi";
 
 
 const router = Router();
-const notificationRepository = new NotificationRepository();
-const notificationService = new NotificationService(notificationRepository);
-const notificationController = new NotificationController(notificationService);
-
+const notificationController = Container.get(NotificationController)
 router.post("/", verifyAuth, (req, res) => notificationController.createNotification(req, res));
 router.get("/:notificationId", verifyAuth, (req, res) => notificationController.getNotificationById(req, res));
 router.get("/user/:userId", verifyAuth, (req, res) => notificationController.getNotificationsByUser(req, res));

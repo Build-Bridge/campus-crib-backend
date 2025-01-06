@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import NotificationService from "../services/NotificationService";
 import { errorResponse, successResponse } from "../utils/response";
+import { Service } from "typedi";
 
-
+@Service()
 class NotificationController {
     private notificationService: NotificationService;
 

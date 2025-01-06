@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import InspectionService from "../services/InspectionService";
 import { errorResponse, successResponse } from "../utils/response";
+import { Service } from "typedi";
 
-
+@Service()
 class InspectionController {
     private inspectionService: InspectionService;
 

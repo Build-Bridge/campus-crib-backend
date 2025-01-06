@@ -3,8 +3,9 @@ import InspectionRequest from "../models/inspectionRequest";
 import Payment from "../models/payment";
 import HostelRepository from "../repositories/HostelRepository";
 import NotificationService from "./NotificationService";
+import { Service } from "typedi";
 
-
+@Service()
 class InspectionService {
 
     constructor(private readonly notificationService: NotificationService, private readonly hostelRepository: HostelRepository) {}
