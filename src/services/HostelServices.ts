@@ -1,15 +1,29 @@
 import { Service } from "typedi";
 import HostelRepository from "../repositories/HostelRepository";
 import { IHostel } from "../models/hostel";
+import NotificationRepository from "../repositories/NotificationRepository";
+import NotificationService from "./NotificationService";
+
 
 @Service()
 class HostelServices {
-    constructor(private readonly repository: HostelRepository) {}
+    constructor(private readonly repository: HostelRepository, private readonly notificationService: NotificationService) {}
 
     // Create a new hostel
     async createHostel(data: Partial<IHostel>) {
         try {
             const createdHostel = await this.repository.create(data);
+
+             // Create notification data
+             const notificationData = {
+                title: "New Hostel Available",
+                message: `A new hostel named ${createdHostel.hostelName} at ${createdHostel.location} has been added.`,
+                actionLink: `/hostels/${createdHostel._id}`
+            };
+
+            // Send notifications to all basic users
+            await this.notificationService.sendNotificationToBasicUsers(notificationData);
+
             return {
                 payload: createdHostel,
                 message: "Hostel Created Successfully",

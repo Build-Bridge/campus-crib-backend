@@ -28,6 +28,11 @@ class NotificationRepository extends BaseRepository<INotification> {
     async deleteNotification(notificationId: string): Promise<INotification | null> {
         return await Notifications.findByIdAndDelete(notificationId).exec();
     }
+
+    async createMany(notifications: Partial<INotification>[]): Promise<INotification[]> {
+        const createdNotifications = await Notifications.insertMany(notifications);
+        return createdNotifications as INotification[];
+    }
 }
 
 export default NotificationRepository;
