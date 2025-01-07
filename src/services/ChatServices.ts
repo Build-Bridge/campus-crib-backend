@@ -1,9 +1,10 @@
 import { Service } from "typedi";
 import ChatRepository from "../repositories/ChatRepository";
+import SocketServices from "./SocketServices";
 
 @Service()
 class ChatService {
-    constructor(private readonly chatRepo: ChatRepository) {}
+    constructor(private readonly chatRepo: ChatRepository, private readonly socketService: SocketServices) {}
 
     async sendMessage(sender: string, recipient: string, message: string) {
         // Check if conversation exists
@@ -18,6 +19,7 @@ class ChatService {
         }
 
         // Save the message
+        this.socketService.sendSocketMessage(sender, message, conversation.id);
         const chatMessage = await this.chatRepo.createMessage(sender, recipient, message, conversation.id);
         return {payload: chatMessage, message: "Message sent Successfully"};
     }

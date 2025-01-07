@@ -21,10 +21,13 @@ class SocketServices {
     }
   }
 
-  sendSocketNotification(userId: string, notifcation: Partial<INotification>){
+  sendSocketNotification(userId: string, notifcation: Partial<INotification>) {
     emitSocketEvent("notification", notifcation, userId);
-}
+  }
+
+  sendSocketMessage(userId: string, message: string, conversationId: string) {
+    emitSocketEvent("chatMessage", { message, conversationId }, userId);
+  }
 }
 
-
-export default SocketServices
+export default SocketServices;
