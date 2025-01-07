@@ -19,7 +19,7 @@ class ChatService {
         }
 
         // Save the message
-        this.socketService.sendSocketMessage(sender, message, conversation.id);
+        this.socketService.sendSocketMessage(recipient, message, conversation.id);
         const chatMessage = await this.chatRepo.createMessage(sender, recipient, message, conversation.id);
         return {payload: chatMessage, message: "Message sent Successfully"};
     }
