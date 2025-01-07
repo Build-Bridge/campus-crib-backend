@@ -22,47 +22,51 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typedi_1 = require("typedi");
-const notification_1 = __importDefault(require("../models/notification"));
-const BaseRepository_1 = require("./BaseRepository");
-let NotificationRepository = class NotificationRepository extends BaseRepository_1.BaseRepository {
-    constructor() {
-        super(notification_1.default);
+const NotificationRepository_1 = __importDefault(require("../repositories/NotificationRepository"));
+const user_1 = __importDefault(require("../models/user"));
+const SocketServices_1 = __importDefault(require("./SocketServices"));
+let NotificationService = class NotificationService {
+    constructor(notificationRepository, socketServices) {
+        this.notificationRepository = notificationRepository;
+        this.socketServices = socketServices;
     }
     createNotification(notificationData) {
         return __awaiter(this, void 0, void 0, function* () {
-            const notification = new notification_1.default(notificationData);
-            return yield notification.save();
+            let notification = yield this.notificationRepository.createNotification(notificationData);
+            this.socketServices.sendSocketNotification(String(notification.user), notification);
+            return { payload: notification };
         });
     }
-    findNotificationById(notificationId) {
+    getNotificationById(notificationId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield notification_1.default.findById(notificationId).exec();
+            return { payload: yield this.notificationRepository.findNotificationById(notificationId) };
         });
     }
-    findNotificationsByUser(userId) {
+    getNotificationsByUser(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield notification_1.default.find({ user: userId }).exec();
+            return { payload: yield this.notificationRepository.findNotificationsByUser(userId) };
         });
     }
     updateNotification(notificationId, updateData) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield notification_1.default.findByIdAndUpdate(notificationId, updateData, { new: true }).exec();
+            return { payload: yield this.notificationRepository.updateNotification(notificationId, updateData) };
         });
     }
     deleteNotification(notificationId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield notification_1.default.findByIdAndDelete(notificationId).exec();
+            return { payload: yield this.notificationRepository.deleteNotification(notificationId) };
         });
     }
-    createMany(notifications) {
+    sendNotificationToBasicUsers(notificationData) {
         return __awaiter(this, void 0, void 0, function* () {
-            const createdNotifications = yield notification_1.default.insertMany(notifications);
-            return createdNotifications;
+            const basicUsers = yield user_1.default.find({ userType: "BASIC" }).exec();
+            const notifications = basicUsers.map(user => (Object.assign(Object.assign({}, notificationData), { user: user._id })));
+            yield this.notificationRepository.createMany(notifications);
         });
     }
 };
-NotificationRepository = __decorate([
+NotificationService = __decorate([
     (0, typedi_1.Service)(),
-    __metadata("design:paramtypes", [])
-], NotificationRepository);
-exports.default = NotificationRepository;
+    __metadata("design:paramtypes", [NotificationRepository_1.default, SocketServices_1.default])
+], NotificationService);
+exports.default = NotificationService;

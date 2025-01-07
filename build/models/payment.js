@@ -24,13 +24,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const NotificationsSchema = new mongoose_1.Schema({
-    user: { type: mongoose_1.SchemaTypes.ObjectId, ref: "Users" },
-    message: String,
-    title: String,
-    actionLink: String
+const paymentSchema = new mongoose_1.Schema({
+    user: { type: mongoose_1.Schema.Types.ObjectId, ref: "Users", required: true },
+    inspectionRequest: { type: mongoose_1.Schema.Types.ObjectId, ref: "InspectionRequest", required: true },
+    amount: { type: Number, required: true },
+    status: { type: String, default: 'pending' },
 }, {
     timestamps: true,
 });
-const Notifications = mongoose_1.default.model("Notifications", NotificationsSchema);
-exports.default = Notifications;
+const Payment = mongoose_1.default.model("Payment", paymentSchema);
+exports.default = Payment;

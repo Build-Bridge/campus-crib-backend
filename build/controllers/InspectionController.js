@@ -21,45 +21,42 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const InspectionService_1 = __importDefault(require("../services/InspectionService"));
+const response_1 = require("../utils/response");
 const typedi_1 = require("typedi");
-const ChatRepository_1 = __importDefault(require("../repositories/ChatRepository"));
-const SocketServices_1 = __importDefault(require("./SocketServices"));
-let ChatService = class ChatService {
-    constructor(chatRepo, socketService) {
-        this.chatRepo = chatRepo;
-        this.socketService = socketService;
+let InspectionController = class InspectionController {
+    constructor(inspectionService) {
+        this.inspectionService = inspectionService;
     }
-    sendMessage(sender, recipient, message) {
+    requestInspection(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            // Check if conversation exists
-            const participants = [sender, recipient];
-            let conversation = yield this.chatRepo.findConversation(participants);
-            // If not, create a new conversation
-            if (!conversation) {
-                conversation = yield this.chatRepo.createConversation(participants, message);
+            try {
+                const { hostel, inspectionDate } = req.body;
+                const user = req.body.user; // From verifyAuth middleware
+                const response = yield this.inspectionService.createInspectionRequest(user, hostel, new Date(inspectionDate));
+                (0, response_1.successResponse)(response, res);
             }
-            else {
-                yield this.chatRepo.updateConversation(conversation.id, message);
+            catch (err) {
+                (0, response_1.errorResponse)(err.message, res);
             }
-            // Save the message
-            this.socketService.sendSocketMessage(recipient, message, conversation.id);
-            const chatMessage = yield this.chatRepo.createMessage(sender, recipient, message, conversation.id);
-            return { payload: chatMessage, message: "Message sent Successfully" };
         });
     }
-    getConversationMessages(conversationId, userId) {
+    makePayment(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            return { payload: yield this.chatRepo.getMessagesByConversation(conversationId, userId), message: "Successful" };
-        });
-    }
-    getUserConversations(userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return { payload: yield this.chatRepo.getUserConversations(userId), message: "Successful" };
+            try {
+                const { inspectionRequestId, amount } = req.body;
+                const user = req.body.user; // From verifyAuth middleware
+                const response = yield this.inspectionService.makePayment(user, inspectionRequestId, amount);
+                (0, response_1.successResponse)(response, res);
+            }
+            catch (err) {
+                (0, response_1.errorResponse)(err.message, res);
+            }
         });
     }
 };
-ChatService = __decorate([
+InspectionController = __decorate([
     (0, typedi_1.Service)(),
-    __metadata("design:paramtypes", [ChatRepository_1.default, SocketServices_1.default])
-], ChatService);
-exports.default = ChatService;
+    __metadata("design:paramtypes", [InspectionService_1.default])
+], InspectionController);
+exports.default = InspectionController;

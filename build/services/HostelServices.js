@@ -23,15 +23,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const typedi_1 = require("typedi");
 const HostelRepository_1 = __importDefault(require("../repositories/HostelRepository"));
+const NotificationService_1 = __importDefault(require("./NotificationService"));
 let HostelServices = class HostelServices {
-    constructor(repository) {
+    constructor(repository, notificationService) {
         this.repository = repository;
+        this.notificationService = notificationService;
     }
     // Create a new hostel
     createHostel(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const createdHostel = yield this.repository.create(data);
+                // Create notification data
+                const notificationData = {
+                    title: "New Hostel Available",
+                    message: `A new hostel named ${createdHostel.hostelName} at ${createdHostel.location} has been added.`,
+                    actionLink: `/hostels/${createdHostel._id}`
+                };
+                // Send notifications to all basic users
+                yield this.notificationService.sendNotificationToBasicUsers(notificationData);
                 return {
                     payload: createdHostel,
                     message: "Hostel Created Successfully",
@@ -131,6 +141,6 @@ let HostelServices = class HostelServices {
 };
 HostelServices = __decorate([
     (0, typedi_1.Service)(),
-    __metadata("design:paramtypes", [HostelRepository_1.default])
+    __metadata("design:paramtypes", [HostelRepository_1.default, NotificationService_1.default])
 ], HostelServices);
 exports.default = HostelServices;
