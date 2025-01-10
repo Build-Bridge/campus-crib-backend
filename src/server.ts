@@ -13,6 +13,7 @@ import reviewRoutes from "./routes/ReviewRoutes";
 import SocketServices from './services/SocketServices';
 import { initSocket } from './config/socket';
 import { createServer } from "http";
+import Container from 'typedi';
 
 const app = express();
 // Create HTTP server
@@ -20,6 +21,9 @@ const httpServer = createServer(app);
 
 // Configure Socket.IO
 initSocket(httpServer); // Initialize Socket.IO with the server
+// Initialize SocketServices after Socket.IO
+const socketServices = Container.get(SocketServices)
+socketServices.initialize();
 
 const port = process.env.PORT || 3050;
 
