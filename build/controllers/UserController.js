@@ -30,9 +30,11 @@ let UserController = class UserController {
             try {
                 let data = req.body;
                 let response = yield this.service.signUp(data);
+                console.log(response);
                 (0, response_1.successResponse)(response, res);
             }
             catch (err) {
+                console.log(err);
                 (0, response_1.errorResponse)(err.message, res);
             }
         });

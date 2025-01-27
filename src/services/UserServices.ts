@@ -23,41 +23,19 @@ export class UserServices {
     async signUp(data: Partial<IUser>): Promise<Payload> {
         try {
             let { email, password } = data;
+            console.log(data)
             // let { size, houseHoldSize, primaryCookingAppliance } = data;
 
             let checkUser = await this.repo.findOne({email});
+            
             if (checkUser) {
                 return { message: "User with this email already exists." }
             }
 
             data.password =  await bcrypt.hash(password as string, 8);
             let user = await this.repo.create(data);
-
-            let typeObject;
-            // switch (type) {
-            //     case UserType.BUSINESS:
-            //         typeObject = await this.businessServices.createBusiness(typeData);
-            //         break;
-            //     case UserType.RIDER:
-            //         typeObject = await this.riderServices.create(typeData)
-            //         break;
-            //     case UserType.CUSTOMER_SERVICE:
-            //         typeObject = await this.csServices.create(typeData);
-            //         break;
-            //     case UserType.GAS_STATION:
-            //         typeObject = await this.gsServices.create(typeData)
-            //         break;
-            //     case UserType.INDIVIDUAL:
-            //         typeObject = await this.individualServices.create(typeData)
-            //         break;
-            //     case UserType.MERCHANT:
-            //         typeObject = await this.merchantRepository.create(typeData)
-            //         break;
-            // }
-
-            // let gasObject: GasDto = { size, houseHoldSize, primaryCookingAppliance, ownedBy: String(user._id) };
-
-            // let gas = await this.gasRepo.create(gasObject)
+            console.log(user)
+      
 
             let token = this.generateToken(String(user._id))
 

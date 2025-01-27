@@ -44,6 +44,7 @@ let UserServices = class UserServices {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let { email, password } = data;
+                console.log(data);
                 // let { size, houseHoldSize, primaryCookingAppliance } = data;
                 let checkUser = yield this.repo.findOne({ email });
                 if (checkUser) {
@@ -51,29 +52,7 @@ let UserServices = class UserServices {
                 }
                 data.password = yield bcrypt_1.default.hash(password, 8);
                 let user = yield this.repo.create(data);
-                let typeObject;
-                // switch (type) {
-                //     case UserType.BUSINESS:
-                //         typeObject = await this.businessServices.createBusiness(typeData);
-                //         break;
-                //     case UserType.RIDER:
-                //         typeObject = await this.riderServices.create(typeData)
-                //         break;
-                //     case UserType.CUSTOMER_SERVICE:
-                //         typeObject = await this.csServices.create(typeData);
-                //         break;
-                //     case UserType.GAS_STATION:
-                //         typeObject = await this.gsServices.create(typeData)
-                //         break;
-                //     case UserType.INDIVIDUAL:
-                //         typeObject = await this.individualServices.create(typeData)
-                //         break;
-                //     case UserType.MERCHANT:
-                //         typeObject = await this.merchantRepository.create(typeData)
-                //         break;
-                // }
-                // let gasObject: GasDto = { size, houseHoldSize, primaryCookingAppliance, ownedBy: String(user._id) };
-                // let gas = await this.gasRepo.create(gasObject)
+                console.log(user);
                 let token = this.generateToken(String(user._id));
                 return {
                     payload: { user, token },

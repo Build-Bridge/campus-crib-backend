@@ -14,7 +14,7 @@ export const successResponse = (payload:  Payload, res: Response) => {
 };
 
 export const errorResponse =  (message:  string, res: Response) => {
-  return res.json({
+  return res.status(400).json({
     message,
     status:400
   })

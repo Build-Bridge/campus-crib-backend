@@ -21,7 +21,11 @@ class BaseRepository {
     }
     findOne(query) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.model.findOne(query).populate("user").exec();
+            const schemaPaths = this.model.schema.paths;
+            if (schemaPaths['user']) {
+                return this.model.findOne(query).populate("user").exec();
+            }
+            return this.model.findOne(query).exec();
         });
     }
     create(data) {

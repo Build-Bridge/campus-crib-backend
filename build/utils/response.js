@@ -10,7 +10,7 @@ const successResponse = (payload, res) => {
 };
 exports.successResponse = successResponse;
 const errorResponse = (message, res) => {
-    return res.json({
+    return res.status(400).json({
         message,
         status: 400
     });

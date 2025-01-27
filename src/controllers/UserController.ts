@@ -13,9 +13,11 @@ class UserController{
         try{
             let data = req.body;
             let response = await this.service.signUp(data);
-             successResponse(response, res)
+            console.log(response)
+            successResponse(response, res)
         }
         catch(err: any){
+            console.log(err)
              errorResponse(err.message, res);
         }
     }
