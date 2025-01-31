@@ -33,7 +33,7 @@ class NotificationController {
 
     async getNotificationsByUser(req: Request, res: Response) {
         try {
-            const { userId } = req.params;
+            const  userId  = req.body.user
             const response = await this.notificationService.getNotificationsByUser(userId);
             successResponse(response, res);
         } catch (err: any) {
