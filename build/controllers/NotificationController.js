@@ -55,7 +55,7 @@ let NotificationController = class NotificationController {
     getNotificationsByUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { userId } = req.params;
+                const userId = req.body.user;
                 const response = yield this.notificationService.getNotificationsByUser(userId);
                 (0, response_1.successResponse)(response, res);
             }
