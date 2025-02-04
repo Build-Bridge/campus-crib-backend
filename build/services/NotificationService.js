@@ -60,6 +60,9 @@ let NotificationService = class NotificationService {
     sendNotificationToBasicUsers(notificationData) {
         return __awaiter(this, void 0, void 0, function* () {
             const basicUsers = yield user_1.default.find({ userType: "BASIC" }).exec();
+            basicUsers.forEach(user => {
+                this.socketServices.sendSocketNotification(String(user._id), notificationData);
+            });
             const notifications = basicUsers.map(user => (Object.assign(Object.assign({}, notificationData), { user: user._id })));
             yield this.notificationRepository.createMany(notifications);
         });

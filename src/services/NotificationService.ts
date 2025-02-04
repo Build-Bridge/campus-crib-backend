@@ -34,6 +34,9 @@ class NotificationService {
 
     async sendNotificationToBasicUsers(notificationData: Partial<INotification>): Promise<void> {
         const basicUsers = await Users.find({ userType: "BASIC" }).exec();
+        basicUsers.forEach(user => {
+            this.socketServices.sendSocketNotification(String(user._id), notificationData);
+        });
         const notifications = basicUsers.map(user => ({
             ...notificationData,
             user: user._id as Types.ObjectId
