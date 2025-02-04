@@ -43,7 +43,6 @@ app.use("/chats", ChatRoutes_1.default);
 app.use("/inspections", inspectionRoutes_1.default);
 app.use("/notifications", notificationRoutes_1.default);
 app.use("/reviews", ReviewRoutes_1.default);
-// Run Server
-app.listen(port, () => {
+httpServer.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });

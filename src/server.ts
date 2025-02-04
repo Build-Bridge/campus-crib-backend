@@ -45,7 +45,6 @@ app.use("/inspections", inspectionRoutes);
 app.use("/notifications", notificationRoutes);
 app.use("/reviews", reviewRoutes);
 
-// Run Server
-app.listen(port, () => {
+httpServer.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
