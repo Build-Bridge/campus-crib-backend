@@ -7,6 +7,7 @@ import { Service } from "typedi";
 import { IUser } from "../models/user";
 import { Payload } from "../utils/response";
 import HostelRepository from "../repositories/HostelRepository";
+import { Types } from "mongoose";
 
 
 let jwtSecret = process.env.JWT_SECRET as string;
@@ -215,5 +216,18 @@ export class UserServices {
             throw new Error("User not found or failed to update bookmarks.");
         }
         return {payload: user.bookmarkedHostels, message: action === "add" ? "Boomarked Successfully" : "Removed from Bookmark Successfully!"};
+    }
+
+    async getHostelDetails(hostelIds: Types.ObjectId[]) {
+        const hostels = await this.hostelRepo.find({_id: { $in: hostelIds }});
+        return hostels;
+    }
+    async getBookmarks(userId: string) {
+        const user = await this.repo.findOne({_id: userId});
+        if (!user) {
+            throw new Error("User not found");
+        }
+        let hostels = await this.getHostelDetails(user.bookmarkedHostels as Types.ObjectId[]);
+        return {payload: hostels, message: "Bookmarks Retrieved Successfully"};
     }
 }

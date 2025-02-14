@@ -62,6 +62,16 @@ class UserController{
         }
     }
 
+    async getBookmarks(req: Request, res: Response) {
+        try {
+            const userId = req.body.user; 
+            const bookmarks = await this.service.getBookmarks(userId);
+            successResponse(bookmarks, res);
+        } catch (err: any) {
+            errorResponse(err.message, res);
+        }
+    }
+
     async getAgentDetailsById(req: Request, res: Response) {
         try {
             const {id} = req.params;

@@ -12,5 +12,6 @@ const userController = typedi_1.default.get(UserController_1.default);
 router.post("/sign-up", (req, res) => userController.signUp(req, res));
 router.post("/sign-in", (req, res) => userController.signIn(req, res));
 router.post("/bookmark", verifyAuth_1.verifyAuth, (req, res) => userController.updateBookmark(req, res));
+router.get("/bookmark", verifyAuth_1.verifyAuth, (req, res) => userController.getBookmarks(req, res));
 router.get("/agent/:id", (req, res) => userController.getAgentDetailsById(req, res));
 exports.default = router;

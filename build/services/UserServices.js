@@ -218,6 +218,22 @@ let UserServices = class UserServices {
             return { payload: user.bookmarkedHostels, message: action === "add" ? "Boomarked Successfully" : "Removed from Bookmark Successfully!" };
         });
     }
+    getHostelDetails(hostelIds) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const hostels = yield this.hostelRepo.find({ _id: { $in: hostelIds } });
+            return hostels;
+        });
+    }
+    getBookmarks(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield this.repo.findOne({ _id: userId });
+            if (!user) {
+                throw new Error("User not found");
+            }
+            let hostels = yield this.getHostelDetails(user.bookmarkedHostels);
+            return { payload: hostels, message: "Bookmarks Retrieved Successfully" };
+        });
+    }
 };
 UserServices = __decorate([
     (0, typedi_1.Service)(),

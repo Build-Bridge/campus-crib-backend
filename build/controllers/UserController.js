@@ -80,6 +80,18 @@ let UserController = class UserController {
             }
         });
     }
+    getBookmarks(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const userId = req.body.user;
+                const bookmarks = yield this.service.getBookmarks(userId);
+                (0, response_1.successResponse)(bookmarks, res);
+            }
+            catch (err) {
+                (0, response_1.errorResponse)(err.message, res);
+            }
+        });
+    }
     getAgentDetailsById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
