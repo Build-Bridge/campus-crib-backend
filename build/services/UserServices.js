@@ -48,7 +48,7 @@ let UserServices = class UserServices {
                 // let { size, houseHoldSize, primaryCookingAppliance } = data;
                 let checkUser = yield this.repo.findOne({ email });
                 if (checkUser) {
-                    return { message: "User with this email already exists." };
+                    throw Error("User with this email already exists.");
                 }
                 data.password = yield bcrypt_1.default.hash(password, 8);
                 let user = yield this.repo.create(data);

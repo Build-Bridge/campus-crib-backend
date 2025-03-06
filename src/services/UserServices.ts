@@ -30,7 +30,7 @@ export class UserServices {
             let checkUser = await this.repo.findOne({email});
             
             if (checkUser) {
-                return { message: "User with this email already exists." }
+                 throw Error("User with this email already exists.")
             }
 
             data.password =  await bcrypt.hash(password as string, 8);
