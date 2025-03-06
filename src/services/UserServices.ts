@@ -87,7 +87,7 @@ export class UserServices {
             let user = await this.repo.findOne({email})
 
             if (!user) {
-                return { message: "User with this email does not exist" }
+                throw Error("User with this email does not exist")
             }
 
             // if (user.isVerified !== true) {
@@ -96,7 +96,7 @@ export class UserServices {
 
             let doMatch = await bcrypt.compare(password as string, user.password);
             if (!doMatch) {
-                return { message: "Incorrect Password" }
+               throw Error("Incorrect Password")
             }
             let token = this.generateToken(String(user._id))
 

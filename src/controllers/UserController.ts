@@ -26,7 +26,6 @@ class UserController{
         try{
             let data = req.body;
             let response = await this.service.signIn(data);
-            
              successResponse(response, res)
         }
         catch(err: any){

@@ -97,14 +97,14 @@ let UserServices = class UserServices {
                 let { email, password } = data;
                 let user = yield this.repo.findOne({ email });
                 if (!user) {
-                    return { message: "User with this email does not exist" };
+                    throw Error("User with this email does not exist");
                 }
                 // if (user.isVerified !== true) {
                 //     return { payload: null, message: "You're not verified yet!" }
                 // }
                 let doMatch = yield bcrypt_1.default.compare(password, user.password);
                 if (!doMatch) {
-                    return { message: "Incorrect Password" };
+                    throw Error("Incorrect Password");
                 }
                 let token = this.generateToken(String(user._id));
                 // switch (user.type) {
