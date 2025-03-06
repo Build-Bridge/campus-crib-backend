@@ -37,23 +37,30 @@ class HostelServices {
     async getAllHostels(query: any) {
         try {
             const filters: any = {};
-            
+
             // Add filters based on query parameters
             if (query.hostelName) filters.hostelName = { $regex: query.hostelName, $options: "i" };
             if (query.location) filters.location = { $regex: query.location, $options: "i" };
             if (query.hostelType) filters.hostelType = query.hostelType;
             if (query.isAvailable !== undefined) filters.isAvailable = query.isAvailable === "true";
+            
             if (query.minPrice || query.maxPrice) {
                 filters.price = {};
-                if (query.minPrice) filters.price.$gte = query.minPrice;
-                if (query.maxPrice) filters.price.$lte = query.maxPrice;
+                if (query.minPrice) filters.price.$gte = Number(query.minPrice);
+                if (query.maxPrice) filters.price.$lte = Number(query.maxPrice);
+            
+                // Ensure filters.price is not empty (MongoDB does not accept empty objects as conditions)
+                if (Object.keys(filters.price).length === 0) {
+                    delete filters.price;
+                }
             }
-
+            
             const hostels = await this.repository.find(filters);
             return {
                 payload: hostels,
                 message: "Hostels Retrieved Successfully",
             };
+            
         } catch (err: any) {
             throw new Error(err.message);
         }
