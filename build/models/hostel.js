@@ -37,7 +37,7 @@ const hostelSchema = new mongoose_1.Schema({
     images: [{ type: String }],
     description: { type: String, required: true },
     location: { type: String, required: true },
-    price: { type: String, required: true },
+    price: { type: Number, required: true },
     features: [{ type: String }],
     availableRooms: { type: Number, default: 1 },
     isAvailable: { type: Boolean, default: true },

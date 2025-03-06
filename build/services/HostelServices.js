@@ -67,11 +67,20 @@ let HostelServices = class HostelServices {
                 if (query.isAvailable !== undefined)
                     filters.isAvailable = query.isAvailable === "true";
                 if (query.minPrice || query.maxPrice) {
-                    filters.price = {};
-                    if (query.minPrice)
-                        filters.price.$gte = query.minPrice;
-                    if (query.maxPrice)
-                        filters.price.$lte = query.maxPrice;
+                    const priceConditions = [];
+                    if (query.minPrice) {
+                        priceConditions.push({
+                            $gte: [{ $toDouble: "$price" }, Number(query.minPrice)]
+                        });
+                    }
+                    if (query.maxPrice) {
+                        priceConditions.push({
+                            $lte: [{ $toDouble: "$price" }, Number(query.maxPrice)]
+                        });
+                    }
+                    if (priceConditions.length > 0) {
+                        filters.$expr = { $and: priceConditions };
+                    }
                 }
                 const hostels = yield this.repository.find(filters);
                 return {
