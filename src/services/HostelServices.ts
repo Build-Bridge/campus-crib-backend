@@ -45,13 +45,22 @@ class HostelServices {
             if (query.isAvailable !== undefined) filters.isAvailable = query.isAvailable === "true";
             
             if (query.minPrice || query.maxPrice) {
-                filters.price = {};
-                if (query.minPrice) filters.price.$gte = Number(query.minPrice);
-                if (query.maxPrice) filters.price.$lte = Number(query.maxPrice);
+                const priceConditions: any[] = [];
             
-                // Ensure filters.price is not empty (MongoDB does not accept empty objects as conditions)
-                if (Object.keys(filters.price).length === 0) {
-                    delete filters.price;
+                if (query.minPrice) {
+                    priceConditions.push({ 
+                        $gte: [{ $toDouble: "$price" }, Number(query.minPrice)] 
+                    });
+                }
+            
+                if (query.maxPrice) {
+                    priceConditions.push({ 
+                        $lte: [{ $toDouble: "$price" }, Number(query.maxPrice)] 
+                    });
+                }
+            
+                if (priceConditions.length > 0) {
+                    filters.$expr = { $and: priceConditions };
                 }
             }
             
