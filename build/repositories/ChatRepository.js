@@ -22,12 +22,13 @@ const typedi_1 = require("typedi");
 const chatConversation_1 = __importDefault(require("../models/chatConversation"));
 const chatMessages_1 = __importDefault(require("../models/chatMessages"));
 let ChatRepository = class ChatRepository {
-    createConversation(participants, lastMessage) {
+    createConversation(participants, lastMessage, user) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield chatConversation_1.default.create({
                 participants,
                 lastMessage,
                 lastMessageAt: new Date(),
+                user
             });
         });
     }
@@ -69,7 +70,7 @@ let ChatRepository = class ChatRepository {
     }
     getUserConversations(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield chatConversation_1.default.find({ participants: userId }).sort({ lastMessageAt: -1 });
+            return yield chatConversation_1.default.find({ user: userId }).sort({ lastMessageAt: -1 });
         });
     }
 };

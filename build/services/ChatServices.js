@@ -36,7 +36,7 @@ let ChatService = class ChatService {
             let conversation = yield this.chatRepo.findConversation(participants);
             // If not, create a new conversation
             if (!conversation) {
-                conversation = yield this.chatRepo.createConversation(participants, message);
+                conversation = yield this.chatRepo.createConversation(participants, message, sender);
             }
             else {
                 yield this.chatRepo.updateConversation(conversation.id, message);

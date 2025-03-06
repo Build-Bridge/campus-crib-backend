@@ -13,7 +13,7 @@ class ChatService {
 
         // If not, create a new conversation
         if (!conversation) {
-            conversation = await this.chatRepo.createConversation(participants, message);
+            conversation = await this.chatRepo.createConversation(participants, message, sender);
         } else {
             await this.chatRepo.updateConversation(conversation.id, message);
         }

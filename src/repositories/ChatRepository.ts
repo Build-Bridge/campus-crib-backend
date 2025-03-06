@@ -1,14 +1,16 @@
 import { Service } from "typedi";
 import ChatConversations from "../models/chatConversation";
 import ChatMessages from "../models/chatMessages";
+import { Types } from "mongoose";
 
 @Service()
 class ChatRepository {
-    async createConversation(participants: string[], lastMessage: string) {
+    async createConversation(participants: string[], lastMessage: string, user: string | Types.ObjectId) {
         return await ChatConversations.create({
             participants,
             lastMessage,
             lastMessageAt: new Date(),
+            user
         });
     }
 
@@ -53,7 +55,7 @@ class ChatRepository {
     }
 
     async getUserConversations(userId: string) {
-        return await ChatConversations.find({ participants: userId }).sort({ lastMessageAt: -1 });
+        return await ChatConversations.find({ user: userId }).sort({ lastMessageAt: -1 });
     }
 }
 

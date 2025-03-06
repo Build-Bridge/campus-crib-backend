@@ -28,6 +28,7 @@ const chatConversationSchema = new mongoose_1.Schema({
     participants: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "Users", required: true }],
     lastMessage: { type: String },
     lastMessageAt: { type: Date, default: Date.now },
+    user: { type: mongoose_1.Schema.Types.ObjectId, ref: "Users", required: true }
 }, {
     timestamps: true,
 });
