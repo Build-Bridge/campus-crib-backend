@@ -28,7 +28,7 @@ let ChatRepository = class ChatRepository {
                 participants,
                 lastMessage,
                 lastMessageAt: new Date(),
-                user
+                user,
             });
         });
     }
@@ -58,7 +58,7 @@ let ChatRepository = class ChatRepository {
         return __awaiter(this, void 0, void 0, function* () {
             if (userId) {
                 const conversation = yield chatConversation_1.default.findOne({
-                    participants: { $all: [userId, conversationId] }
+                    participants: { $all: [userId, conversationId] },
                 });
                 if (!conversation) {
                     throw new Error("Conversation not found");
@@ -70,7 +70,9 @@ let ChatRepository = class ChatRepository {
     }
     getUserConversations(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield chatConversation_1.default.find({ user: userId }).sort({ lastMessageAt: -1 });
+            return yield chatConversation_1.default.find({ user: userId }).sort({
+                lastMessageAt: -1,
+            });
         });
     }
 };
