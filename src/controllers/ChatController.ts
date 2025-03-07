@@ -11,7 +11,7 @@ class ChatController {
         try {
             const { recipient, message } = req.body;
             const sender = req.body.user; // From verifyAuth middleware
-            const response = await this.chatService.sendMessage(sender, recipient, message);
+            const response = await this.chatService.sendMessage(String(sender), recipient, message);
             successResponse(response, res);
         } catch (err: any) {
             errorResponse(err.message, res);

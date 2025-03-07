@@ -33,7 +33,7 @@ let ChatController = class ChatController {
             try {
                 const { recipient, message } = req.body;
                 const sender = req.body.user; // From verifyAuth middleware
-                const response = yield this.chatService.sendMessage(sender, recipient, message);
+                const response = yield this.chatService.sendMessage(String(sender), recipient, message);
                 (0, response_1.successResponse)(response, res);
             }
             catch (err) {
