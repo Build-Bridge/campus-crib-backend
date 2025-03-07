@@ -56,7 +56,7 @@ let UserController = class UserController {
             try {
                 let data = req.body;
                 let user = req.body.user;
-                let response = yield this.service.completeProfile(user, data);
+                let response = yield this.service.completeProfile(user._id, data);
                 (0, response_1.successResponse)(response, res);
             }
             catch (err) {
