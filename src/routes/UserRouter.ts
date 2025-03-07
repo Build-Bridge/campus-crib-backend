@@ -11,6 +11,6 @@ router.post("/sign-in", (req: Request, res: Response) => userController.signIn(r
 router.post("/bookmark", verifyAuth, (req, res) => userController.updateBookmark(req, res));
 router.get("/bookmark", verifyAuth, (req, res) => userController.getBookmarks(req, res));
 router.get("/agent/:id", (req, res) => userController.getAgentDetailsById(req, res));
-router.patch("/update",verifyAuth, (req, res) => userController.completeProfile(req, res));
+router.patch("/update", verifyAuth , (req, res) => userController.completeProfile(req, res));
 
 export default router; 
