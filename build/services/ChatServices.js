@@ -77,8 +77,8 @@ let ChatService = class ChatService {
                         break;
                     }
                 }
-                conversation.otherUser = otherUser;
-                populatedConversations.push(conversation);
+                let conversationNew = Object.assign(Object.assign({}, conversation._doc), { otherUser });
+                populatedConversations.push(conversationNew);
             }
             return { payload: populatedConversations, message: "Successful" };
         });
