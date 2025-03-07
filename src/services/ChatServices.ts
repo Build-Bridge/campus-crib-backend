@@ -71,8 +71,8 @@ class ChatService {
           break;
         }
       }
-      conversation.otherUser = otherUser
-      populatedConversations.push(conversation);
+      let conversationNew = {...conversation._doc, otherUser}
+      populatedConversations.push(conversationNew);
     }
 
     return { payload: populatedConversations, message: "Successful" };
