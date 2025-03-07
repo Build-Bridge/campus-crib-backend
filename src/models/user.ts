@@ -16,7 +16,8 @@ export interface IUser extends Document{
     governmentId?: string,
     schoolId?: string,
     businessRegistration?: string
-    bookmarkedHostels?: Types.ObjectId[]
+    bookmarkedHostels?: Types.ObjectId[],
+    phoneNumber: string
 }
 
 const userSchema = new Schema<IUser>({
@@ -27,6 +28,7 @@ const userSchema = new Schema<IUser>({
     profilePicture: {type: String},
     userType: {type: String,enum: Object.values(UserType), default: UserType.BASIC },
     schoolId: {type: String},
+    phoneNumber: {type: String},
     proofOfAddress: {
         type: String
     },
