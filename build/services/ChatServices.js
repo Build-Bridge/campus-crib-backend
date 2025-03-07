@@ -24,6 +24,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const typedi_1 = require("typedi");
 const ChatRepository_1 = __importDefault(require("../repositories/ChatRepository"));
 const SocketServices_1 = __importDefault(require("./SocketServices"));
+const user_1 = __importDefault(require("../models/user"));
 let ChatService = class ChatService {
     constructor(chatRepo, socketService) {
         this.chatRepo = chatRepo;
@@ -49,12 +50,36 @@ let ChatService = class ChatService {
     }
     getConversationMessages(conversationId, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return { payload: yield this.chatRepo.getMessagesByConversation(conversationId, userId), message: "Successful" };
+            let messages = yield this.chatRepo.getMessagesByConversation(conversationId, userId);
+            let conversation = yield this.chatRepo.findConversationById(conversationId);
+            let otherUser;
+            let participants = conversation === null || conversation === void 0 ? void 0 : conversation.participants;
+            if (participants) {
+                for (const participant of participants) {
+                    if (participant !== userId) {
+                        otherUser = yield user_1.default.findById(participant);
+                        break;
+                    }
+                }
+            }
+            return { payload: { messages, otherUser }, message: "Successful" };
         });
     }
     getUserConversations(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return { payload: yield this.chatRepo.getUserConversations(userId), message: "Successful" };
+            let conversations = yield this.chatRepo.getUserConversations(userId);
+            const populatedConversations = [];
+            for (const conversation of conversations) {
+                let otherUser;
+                for (const participant of conversation.participants) {
+                    if (participant !== userId) {
+                        otherUser = yield user_1.default.findById(participant);
+                        break;
+                    }
+                }
+                populatedConversations.push(Object.assign(Object.assign({}, conversation), { otherUser }));
+            }
+            return { payload: populatedConversations, message: "Successful" };
         });
     }
 };

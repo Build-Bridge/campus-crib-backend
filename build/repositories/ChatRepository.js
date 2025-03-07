@@ -32,6 +32,11 @@ let ChatRepository = class ChatRepository {
             });
         });
     }
+    findConversationById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield chatConversation_1.default.findById(id);
+        });
+    }
     findConversation(participants) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield chatConversation_1.default.findOne({

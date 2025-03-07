@@ -138,6 +138,7 @@ export class UserServices {
             message: "Successful"
         }
     }
+    
 
     async completeProfile(userId: string, data: any) {
         let user = await this.repo.findOne({_id: userId});

@@ -13,6 +13,6 @@ router.post("/sign-up", (req, res) => userController.signUp(req, res));
 router.post("/sign-in", (req, res) => userController.signIn(req, res));
 router.post("/bookmark", verifyAuth_1.verifyAuth, (req, res) => userController.updateBookmark(req, res));
 router.get("/bookmark", verifyAuth_1.verifyAuth, (req, res) => userController.getBookmarks(req, res));
-router.get("/agent/:id", (req, res) => userController.getAgentDetailsById(req, res));
+router.get("/:id", (req, res) => userController.getAgentDetailsById(req, res));
 router.patch("/update", verifyAuth_1.verifyAuth, (req, res) => userController.completeProfile(req, res));
 exports.default = router;

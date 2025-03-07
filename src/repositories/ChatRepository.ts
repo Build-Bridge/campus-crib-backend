@@ -18,6 +18,10 @@ class ChatRepository {
     });
   }
 
+  async findConversationById(id: string){
+    return await ChatConversations.findById(id);
+}
+
   async findConversation(participants: string[]) {
     return await ChatConversations.findOne({
       participants: { $all: participants },
