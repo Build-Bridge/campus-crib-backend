@@ -21,7 +21,7 @@ class ChatController {
     async getConversationMessages(req: Request, res: Response) {
         try {
             const { conversationId } = req.params;
-            const {userId} = req.query;
+            const userId = req.body.user;
             const response = await this.chatService.getConversationMessages(conversationId, userId as string);
             successResponse(response, res);
         } catch (err: any) {
