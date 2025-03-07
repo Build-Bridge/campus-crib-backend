@@ -60,10 +60,10 @@ let ChatRepository = class ChatRepository {
                 const conversation = yield chatConversation_1.default.findOne({
                     participants: { $all: [userId, conversationId] },
                 });
-                if (!conversation) {
-                    throw new Error("Conversation not found");
-                }
-                conversationId = conversation._id.toString();
+                //   if (!conversation) {
+                //     throw new Error("Conversation not found");
+                //   }
+                //   conversationId = conversation._id.toString();
             }
             return yield chatMessages_1.default.find({ conversationId }).sort({ timestamp: 1 });
         });

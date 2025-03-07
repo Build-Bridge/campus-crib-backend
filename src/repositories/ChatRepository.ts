@@ -52,11 +52,11 @@ class ChatRepository {
         participants: { $all: [userId, conversationId] },
       });
 
-      if (!conversation) {
-        throw new Error("Conversation not found");
-      }
+    //   if (!conversation) {
+    //     throw new Error("Conversation not found");
+    //   }
 
-      conversationId = conversation._id.toString();
+    //   conversationId = conversation._id.toString();
     }
 
     return await ChatMessages.find({ conversationId }).sort({ timestamp: 1 });
