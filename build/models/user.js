@@ -37,6 +37,7 @@ const userSchema = new mongoose_1.Schema({
     profilePicture: { type: String },
     userType: { type: String, enum: Object.values(UserType), default: UserType.BASIC },
     schoolId: { type: String },
+    phoneNumber: { type: String },
     proofOfAddress: {
         type: String
     },
