@@ -77,7 +77,8 @@ let ChatService = class ChatService {
                         break;
                     }
                 }
-                populatedConversations.push(Object.assign(Object.assign({}, conversation), { otherUser }));
+                conversation.otherUser = otherUser;
+                populatedConversations.push(conversation);
             }
             return { payload: populatedConversations, message: "Successful" };
         });
@@ -85,6 +86,7 @@ let ChatService = class ChatService {
 };
 ChatService = __decorate([
     (0, typedi_1.Service)(),
-    __metadata("design:paramtypes", [ChatRepository_1.default, SocketServices_1.default])
+    __metadata("design:paramtypes", [ChatRepository_1.default,
+        SocketServices_1.default])
 ], ChatService);
 exports.default = ChatService;
