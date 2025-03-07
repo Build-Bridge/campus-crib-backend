@@ -36,6 +36,7 @@ class UserController{
     async completeProfile(req: Request, res: Response){
         try{
             let data = req.body;
+            console.log(data)
             let user = req.body.user;
             let response = await this.service.completeProfile(user, data);
              successResponse(response, res)

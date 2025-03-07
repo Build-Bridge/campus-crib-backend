@@ -55,6 +55,7 @@ let UserController = class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let data = req.body;
+                console.log(data);
                 let user = req.body.user;
                 let response = yield this.service.completeProfile(user, data);
                 (0, response_1.successResponse)(response, res);

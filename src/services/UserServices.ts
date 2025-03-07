@@ -151,7 +151,7 @@ export class UserServices {
         }
 
         user = await this.repo.update({_id: userId}, data);
-
+        console.log(user)
         return {
             payload: user,
             message: "Completed Successfully"

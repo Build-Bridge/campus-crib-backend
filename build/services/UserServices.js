@@ -157,6 +157,7 @@ let UserServices = class UserServices {
                 };
             }
             user = yield this.repo.update({ _id: userId }, data);
+            console.log(user);
             return {
                 payload: user,
                 message: "Completed Successfully"
