@@ -10,7 +10,6 @@ const typedi_1 = __importDefault(require("typedi"));
 const router = (0, express_1.Router)();
 const notificationController = typedi_1.default.get(NotificationController_1.default);
 router.post("/", verifyAuth_1.verifyAuth, (req, res) => notificationController.createNotification(req, res));
-router.get("/:notificationId", verifyAuth_1.verifyAuth, (req, res) => notificationController.getNotificationById(req, res));
 router.get("/user", verifyAuth_1.verifyAuth, (req, res) => notificationController.getNotificationsByUser(req, res));
 router.put("/:notificationId", verifyAuth_1.verifyAuth, (req, res) => notificationController.updateNotification(req, res));
 router.delete("/:notificationId", verifyAuth_1.verifyAuth, (req, res) => notificationController.deleteNotification(req, res));
