@@ -36,12 +36,12 @@ let ReviewRepository = class ReviewRepository extends BaseRepository_1.BaseRepos
     }
     findReviewsByHostel(hostelId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield review_1.default.find({ hostel: hostelId }).exec();
+            return yield review_1.default.find({ hostel: hostelId }).populate("user").exec();
         });
     }
     findReviewsByUser(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield review_1.default.find({ user: userId }).exec();
+            return yield review_1.default.find({ user: userId }).populate("user").exec();
         });
     }
     updateReview(reviewId, updateData) {
