@@ -14,11 +14,11 @@ class ReviewRepository extends BaseRepository<IReview> {
     }
 
     async findReviewsByHostel(hostelId: string): Promise<IReview[]> {
-        return await Review.find({ hostel: hostelId }).exec();
+        return await Review.find({ hostel: hostelId }).populate("user").exec();
     }
 
     async findReviewsByUser(userId: string): Promise<IReview[]> {
-        return await Review.find({ user: userId }).exec();
+        return await Review.find({ user: userId }).populate("user").exec();
     }
 
     async updateReview(reviewId: string, updateData: Partial<IReview>): Promise<IReview | null> {
