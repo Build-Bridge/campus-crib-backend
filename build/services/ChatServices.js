@@ -33,6 +33,10 @@ let ChatService = class ChatService {
     sendMessage(sender, recipient, message) {
         return __awaiter(this, void 0, void 0, function* () {
             // Check if conversation exists
+            let otherUser = yield user_1.default.findById(recipient);
+            if (!otherUser) {
+                throw Error("User doesn't exist");
+            }
             const participants = [sender, recipient];
             let conversation = yield this.chatRepo.findConversation(participants);
             // If not, create a new conversation

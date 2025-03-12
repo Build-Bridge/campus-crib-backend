@@ -12,6 +12,10 @@ class ChatService {
 
   async sendMessage(sender: string, recipient: string, message: string) {
     // Check if conversation exists
+    let otherUser = await Users.findById(recipient);
+    if(!otherUser){
+       throw Error("User doesn't exist")
+    }
     const participants = [sender, recipient];
     let conversation = await this.chatRepo.findConversation(participants);
 
