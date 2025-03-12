@@ -72,8 +72,9 @@ let ChatService = class ChatService {
             for (const conversation of conversations) {
                 let otherUser;
                 for (const participant of conversation.participants) {
-                    if (participant !== userId) {
+                    if (String(participant) != String(userId)) {
                         otherUser = yield user_1.default.findById(participant);
+                        console.log(participant);
                         break;
                     }
                 }

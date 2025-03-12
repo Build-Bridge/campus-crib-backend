@@ -66,8 +66,9 @@ class ChatService {
     for (const conversation of conversations) {
       let otherUser;
       for (const participant of conversation.participants) {
-        if (participant !== userId) {
+        if (String(participant) != String(userId)) {
           otherUser = await Users.findById(participant);
+          console.log(participant)
           break;
         }
       }

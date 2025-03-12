@@ -32,6 +32,7 @@ class ChatController {
     async getUserConversations(req: Request, res: Response) {
         try {
             const userId = req.body.user; // From verifyAuth middleware
+            console.log(userId)
             const response = await this.chatService.getUserConversations(userId);
             successResponse(response, res);
         } catch (err: any) {

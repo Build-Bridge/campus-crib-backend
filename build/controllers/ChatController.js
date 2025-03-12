@@ -58,6 +58,7 @@ let ChatController = class ChatController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const userId = req.body.user; // From verifyAuth middleware
+                console.log(userId);
                 const response = yield this.chatService.getUserConversations(userId);
                 (0, response_1.successResponse)(response, res);
             }
