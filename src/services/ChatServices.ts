@@ -54,7 +54,7 @@ class ChatService {
 
     if (participants) {
       for (const participant of participants) {
-        if (participant !== userId) {
+        if (String(participant) !== String(userId)) {
           otherUser = await Users.findById(participant);
           break;
         }

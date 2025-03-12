@@ -60,7 +60,7 @@ let ChatService = class ChatService {
             let participants = conversation === null || conversation === void 0 ? void 0 : conversation.participants;
             if (participants) {
                 for (const participant of participants) {
-                    if (participant !== userId) {
+                    if (String(participant) !== String(userId)) {
                         otherUser = yield user_1.default.findById(participant);
                         break;
                     }
