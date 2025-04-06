@@ -25,7 +25,7 @@ const userSchema = new Schema<IUser>({
     lastName:{type:String, required: true},
     email:{type: String, required:true},
     password: {type:String, required: true},
-    profilePicture: {type: String},
+    profilePicture: {type: String, default: "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"},
     userType: {type: String,enum: Object.values(UserType), default: UserType.BASIC },
     schoolId: {type: String},
     phoneNumber: {type: String},
