@@ -17,7 +17,10 @@ export interface IUser extends Document{
     schoolId?: string,
     businessRegistration?: string
     bookmarkedHostels?: Types.ObjectId[],
-    phoneNumber: string
+    phoneNumber: string,
+    accountNumber: string,
+    bankName: string,
+    accountName: string,
 }
 
 const userSchema = new Schema<IUser>({
@@ -38,7 +41,10 @@ const userSchema = new Schema<IUser>({
     businessRegistration: {
         type: String
     },
-    bookmarkedHostels: [{ type: Schema.Types.ObjectId, ref: "Hostels" }]
+    bookmarkedHostels: [{ type: Schema.Types.ObjectId, ref: "Hostels" }],
+    accountNumber: {type: String},
+    bankName: {type: String},   
+    accountName: {type: String},
 },
 {
     timestamps: true,
