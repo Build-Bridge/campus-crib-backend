@@ -75,7 +75,7 @@ let ChatRepository = class ChatRepository {
     }
     getUserConversations(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield chatConversation_1.default.find({ user: userId }).sort({
+            return yield chatConversation_1.default.find({ participants: { $in: [userId] } }).sort({
                 lastMessageAt: -1,
             });
         });

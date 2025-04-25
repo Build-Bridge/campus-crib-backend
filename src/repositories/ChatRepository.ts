@@ -67,7 +67,7 @@ class ChatRepository {
   }
 
   async getUserConversations(userId: string) {
-    return await ChatConversations.find({ user: userId }).sort({
+    return await ChatConversations.find({ participants: { $in: [userId] } }).sort({
       lastMessageAt: -1,
     });
   }
