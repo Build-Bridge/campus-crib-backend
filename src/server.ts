@@ -10,6 +10,7 @@ import chatRoutes from "./routes/ChatRoutes"
 import inspectionRoutes from "./routes/inspectionRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
 import reviewRoutes from "./routes/ReviewRoutes";
+import roommateRequestRoutes from "./routes/roommateRequestRoutes";
 import SocketServices from './services/SocketServices';
 import { initSocket } from './config/socket';
 import { createServer } from "http";
@@ -44,6 +45,7 @@ app.use("/chats", chatRoutes)
 app.use("/inspections", inspectionRoutes);
 app.use("/notifications", notificationRoutes);
 app.use("/reviews", reviewRoutes);
+app.use("/roommate-requests", roommateRequestRoutes);
 
 httpServer.listen(port, () => {
   console.log(`Server running on port ${port}`);

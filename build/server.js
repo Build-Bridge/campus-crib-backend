@@ -15,6 +15,7 @@ const ChatRoutes_1 = __importDefault(require("./routes/ChatRoutes"));
 const inspectionRoutes_1 = __importDefault(require("./routes/inspectionRoutes"));
 const notificationRoutes_1 = __importDefault(require("./routes/notificationRoutes"));
 const ReviewRoutes_1 = __importDefault(require("./routes/ReviewRoutes"));
+const roommateRequestRoutes_1 = __importDefault(require("./routes/roommateRequestRoutes"));
 const SocketServices_1 = __importDefault(require("./services/SocketServices"));
 const socket_1 = require("./config/socket");
 const http_1 = require("http");
@@ -43,6 +44,7 @@ app.use("/chats", ChatRoutes_1.default);
 app.use("/inspections", inspectionRoutes_1.default);
 app.use("/notifications", notificationRoutes_1.default);
 app.use("/reviews", ReviewRoutes_1.default);
+app.use("/roommate-requests", roommateRequestRoutes_1.default);
 httpServer.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
