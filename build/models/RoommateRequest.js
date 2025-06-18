@@ -27,7 +27,7 @@ const mongoose_1 = __importStar(require("mongoose"));
 const RoommateRequestSchema = new mongoose_1.Schema({
     userId: {
         type: mongoose_1.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Users',
         required: true
     },
     name: {

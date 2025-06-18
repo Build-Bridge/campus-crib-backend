@@ -22,7 +22,7 @@ export interface IRoommateRequest extends Document {
 const RoommateRequestSchema: Schema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Users',
     required: true
   },
   name: {

@@ -8,7 +8,7 @@ const router = express.Router();
 const roommateRequestController = Container.get(RoommateRequestController);
 
 // All routes require authentication
-router.use(verifyAuth);
+// router.use(verifyAuth);
 
 // Create a new roommate request
 router.post('/', (req, res) => roommateRequestController.createRoommateRequest(req, res));
