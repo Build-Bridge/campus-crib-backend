@@ -68,8 +68,8 @@ let RoommateRequestService = class RoommateRequestService {
                 if (query.religion)
                     filters.religion = { $regex: query.religion, $options: "i" };
                 const requests = yield this.repository.model.find(filters)
-                    .populate('userId', 'name email')
-                    .populate('hostelId', 'name')
+                    .populate('userId')
+                    .populate('hostelId')
                     .sort({ createdAt: -1 })
                     .exec();
                 return {
@@ -87,9 +87,9 @@ let RoommateRequestService = class RoommateRequestService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const request = yield this.repository.model.findById(id)
-                    .populate('userId', 'name email')
-                    .populate('hostelId', 'name')
-                    .populate('comments.userId', 'name email')
+                    .populate('userId')
+                    .populate('hostelId')
+                    .populate('comments.userId')
                     .exec();
                 if (!request) {
                     throw new Error("Roommate request not found");

@@ -5,11 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const typedi_1 = __importDefault(require("typedi"));
+const verifyAuth_1 = require("../middlewares/verifyAuth");
 const RoommateRequestController_1 = __importDefault(require("../controllers/RoommateRequestController"));
 const router = express_1.default.Router();
 const roommateRequestController = typedi_1.default.get(RoommateRequestController_1.default);
 // All routes require authentication
-// router.use(verifyAuth);
+router.use(verifyAuth_1.verifyAuth);
 // Create a new roommate request
 router.post('/', (req, res) => roommateRequestController.createRoommateRequest(req, res));
 // Get all roommate requests

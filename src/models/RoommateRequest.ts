@@ -59,7 +59,7 @@ const RoommateRequestSchema: Schema = new Schema({
   comments: [{
     userId: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'Users',
       required: true
     },
     content: {

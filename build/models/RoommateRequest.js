@@ -64,7 +64,7 @@ const RoommateRequestSchema = new mongoose_1.Schema({
     comments: [{
             userId: {
                 type: mongoose_1.Schema.Types.ObjectId,
-                ref: 'User',
+                ref: 'Users',
                 required: true
             },
             content: {
