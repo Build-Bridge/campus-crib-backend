@@ -59,7 +59,7 @@ const RoommateRequestSchema = new mongoose_1.Schema({
     },
     hostelId: {
         type: mongoose_1.Schema.Types.ObjectId,
-        ref: 'Hostel'
+        ref: 'Hostels'
     },
     comments: [{
             userId: {

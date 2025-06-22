@@ -54,7 +54,7 @@ const RoommateRequestSchema: Schema = new Schema({
   },
   hostelId: {
     type: Schema.Types.ObjectId,
-    ref: 'Hostel'
+    ref: 'Hostels'
   },
   comments: [{
     userId: {
