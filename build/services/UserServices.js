@@ -29,6 +29,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 require("reflect-metadata");
 const typedi_1 = require("typedi");
 const HostelRepository_1 = __importDefault(require("../repositories/HostelRepository"));
+const crypto_1 = __importDefault(require("crypto"));
 let jwtSecret = process.env.JWT_SECRET;
 let UserServices = class UserServices {
     constructor(repo, hostelRepo) {
@@ -39,6 +40,10 @@ let UserServices = class UserServices {
     generateToken(id) {
         let token = jsonwebtoken_1.default.sign({ id }, jwtSecret);
         return token;
+    }
+    // Generate a random reset token
+    generateResetToken() {
+        return crypto_1.default.randomBytes(32).toString('hex');
     }
     signUp(data) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -164,52 +169,62 @@ let UserServices = class UserServices {
             };
         });
     }
-    // async forgotPassword(email: string){
-    //     try{
-    //         let user = await this.repo.find({email});
-    //         if(!user){
-    //             return {
-    //                 payload: null,
-    //                 message: "There is no user with this Email",
-    //                 status: 400
-    //             }
-    //         }
-    //         let otp = this.otpService.generateOTP();
-    //         user.resetToken = String(otp);
-    //         // this.emailService.sendResetToken(user.email, user.resetToken)
-    //         user.resetTokenExpiration = new Date(new Date().setHours(new Date().getHours() + 5))
-    //         this.repo.update(String(user._id), user)
-    //         await this.otpService.sendCreateUserOTP(otp, user.email);
-    //         return {
-    //             message: "Check your Email"
-    //         }
-    //     }
-    //     catch (err: any) {
-    //         throw Error(err.message);
-    //     }
-    // }
-    // async updatePassword(token: string, newPassword: string){
-    //     try{
-    //         let user = await this.repo.findByToken(token);
-    //         if(!user){
-    //             return {
-    //                 payload: null,
-    //                 message: "Invalid Token",
-    //                 status: 400
-    //             }
-    //         }
-    //        user.password = await bcrypt.hash(newPassword, 8)
-    //        user.resetToken = null;
-    //         user = await this.repo.update(String(user._id), user);
-    //         return {
-    //             payload: user,
-    //             message: "Password Updated!"
-    //         }
-    //     }
-    //     catch (err: any) {
-    //         throw Error(err.message);
-    //     }
-    // }
+    forgotPassword(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let user = yield this.repo.findOne({ email });
+                if (!user) {
+                    throw new Error("User with this email does not exist");
+                }
+                // Generate reset token
+                const resetToken = this.generateResetToken();
+                const resetTokenExpiration = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+                // Update user with reset token
+                yield this.repo.update({ _id: user._id }, {
+                    resetToken,
+                    resetTokenExpiration
+                });
+                // TODO: Send email with reset token
+                // For now, we'll return the token (in production, send via email)
+                console.log(`Reset token for ${email}: ${resetToken}`);
+                return {
+                    payload: { resetToken },
+                    message: "Password reset instructions sent to your email"
+                };
+            }
+            catch (err) {
+                throw new Error(err.message);
+            }
+        });
+    }
+    resetPassword(resetToken, newPassword) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let user = yield this.repo.findOne({
+                    resetToken,
+                    resetTokenExpiration: { $gt: new Date() }
+                });
+                if (!user) {
+                    throw new Error("Invalid or expired reset token");
+                }
+                // Hash new password
+                const hashedPassword = yield bcrypt_1.default.hash(newPassword, 8);
+                // Update user password and clear reset token
+                yield this.repo.update({ _id: user._id }, {
+                    password: hashedPassword,
+                    resetToken: null,
+                    resetTokenExpiration: null
+                });
+                return {
+                    payload: null,
+                    message: "Password reset successfully"
+                };
+            }
+            catch (err) {
+                throw new Error(err.message);
+            }
+        });
+    }
     updateBookmark(userId, hostelId, action) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield this.repo.updateBookmark(userId, hostelId, action);

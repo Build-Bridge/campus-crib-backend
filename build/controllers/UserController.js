@@ -65,6 +65,39 @@ let UserController = class UserController {
             }
         });
     }
+    forgotPassword(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { email } = req.body;
+                if (!email) {
+                    throw new Error("Email is required");
+                }
+                const response = yield this.service.forgotPassword(email);
+                (0, response_1.successResponse)(response, res);
+            }
+            catch (err) {
+                (0, response_1.errorResponse)(err.message, res);
+            }
+        });
+    }
+    resetPassword(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { resetToken, newPassword } = req.body;
+                if (!resetToken || !newPassword) {
+                    throw new Error("Reset token and new password are required");
+                }
+                if (newPassword.length < 6) {
+                    throw new Error("Password must be at least 6 characters long");
+                }
+                const response = yield this.service.resetPassword(resetToken, newPassword);
+                (0, response_1.successResponse)(response, res);
+            }
+            catch (err) {
+                (0, response_1.errorResponse)(err.message, res);
+            }
+        });
+    }
     updateBookmark(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

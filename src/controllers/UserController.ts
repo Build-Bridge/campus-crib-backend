@@ -46,6 +46,40 @@ class UserController{
         }
     }
 
+    async forgotPassword(req: Request, res: Response) {
+        try {
+            const { email } = req.body;
+            
+            if (!email) {
+                throw new Error("Email is required");
+            }
+
+            const response = await this.service.forgotPassword(email);
+            successResponse(response, res);
+        } catch (err: any) {
+            errorResponse(err.message, res);
+        }
+    }
+
+    async resetPassword(req: Request, res: Response) {
+        try {
+            const { resetToken, newPassword } = req.body;
+            
+            if (!resetToken || !newPassword) {
+                throw new Error("Reset token and new password are required");
+            }
+
+            if (newPassword.length < 6) {
+                throw new Error("Password must be at least 6 characters long");
+            }
+
+            const response = await this.service.resetPassword(resetToken, newPassword);
+            successResponse(response, res);
+        } catch (err: any) {
+            errorResponse(err.message, res);
+        }
+    }
+
     async updateBookmark(req: Request, res: Response) {
         try {
             const userId = req.body.user; // Retrieved from `verifyAuth` middleware

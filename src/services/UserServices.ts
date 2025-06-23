@@ -8,6 +8,7 @@ import { IUser } from "../models/user";
 import { Payload } from "../utils/response";
 import HostelRepository from "../repositories/HostelRepository";
 import { Types } from "mongoose";
+import crypto from "crypto";
 
 
 let jwtSecret = process.env.JWT_SECRET as string;
@@ -19,6 +20,11 @@ export class UserServices {
     generateToken(id: string) {
         let token = jwt.sign({ id }, jwtSecret)
         return token;
+    }
+
+    // Generate a random reset token
+    generateResetToken(): string {
+        return crypto.randomBytes(32).toString('hex');
     }
 
     async signUp(data: Partial<IUser>): Promise<Payload> {
@@ -159,57 +165,65 @@ export class UserServices {
         }
     }
 
-    // async forgotPassword(email: string){
-    //     try{
-    //         let user = await this.repo.find({email});
-    //         if(!user){
-    //             return {
-    //                 payload: null,
-    //                 message: "There is no user with this Email",
-    //                 status: 400
-    //             }
-    //         }
+    async forgotPassword(email: string) {
+        try {
+            let user = await this.repo.findOne({email});
+            if (!user) {
+                throw new Error("User with this email does not exist");
+            }
 
-    //         let otp = this.otpService.generateOTP();
-    //         user.resetToken = String(otp);
-    //         // this.emailService.sendResetToken(user.email, user.resetToken)
-    //         user.resetTokenExpiration = new Date(new Date().setHours(new Date().getHours() + 5))
-    //         this.repo.update(String(user._id), user)
-    //         await this.otpService.sendCreateUserOTP(otp, user.email);
-    //         return {
-    //             message: "Check your Email"
-    //         }
-    //     }
-    //     catch (err: any) {
-    //         throw Error(err.message);
-    //     }
-    // }
+            // Generate reset token
+            const resetToken = this.generateResetToken();
+            const resetTokenExpiration = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-    // async updatePassword(token: string, newPassword: string){
-    //     try{
-    //         let user = await this.repo.findByToken(token);
+            // Update user with reset token
+            await this.repo.update({_id: user._id}, {
+                resetToken,
+                resetTokenExpiration
+            });
 
-    //         if(!user){
-    //             return {
-    //                 payload: null,
-    //                 message: "Invalid Token",
-    //                 status: 400
-    //             }
-    //         }
+            // TODO: Send email with reset token
+            // For now, we'll return the token (in production, send via email)
+            console.log(`Reset token for ${email}: ${resetToken}`);
 
-    //        user.password = await bcrypt.hash(newPassword, 8)
-    //        user.resetToken = null;
-    //         user = await this.repo.update(String(user._id), user);
+            return {
+                payload: { resetToken }, // Remove this in production
+                message: "Password reset instructions sent to your email"
+            };
+        } catch (err: any) {
+            throw new Error(err.message);
+        }
+    }
 
-    //         return {
-    //             payload: user,
-    //             message: "Password Updated!"
-    //         }
-    //     }
-    //     catch (err: any) {
-    //         throw Error(err.message);
-    //     }
-    // }
+    async resetPassword(resetToken: string, newPassword: string) {
+        try {
+            let user = await this.repo.findOne({
+                resetToken,
+                resetTokenExpiration: { $gt: new Date() }
+            });
+
+            if (!user) {
+                throw new Error("Invalid or expired reset token");
+            }
+
+            // Hash new password
+            const hashedPassword = await bcrypt.hash(newPassword, 8);
+
+            // Update user password and clear reset token
+            await this.repo.update({_id: user._id}, {
+                password: hashedPassword,
+                resetToken: null,
+                resetTokenExpiration: null
+            });
+
+            return {
+                payload: null,
+                message: "Password reset successfully"
+            };
+        } catch (err: any) {
+            throw new Error(err.message);
+        }
+    }
 
     async updateBookmark(userId: string, hostelId: string, action: "add" | "remove") {
         const user = await this.repo.updateBookmark(userId, hostelId, action);

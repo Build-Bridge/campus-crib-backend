@@ -21,6 +21,8 @@ export interface IUser extends Document{
     accountNumber: string,
     bankName: string,
     accountName: string,
+    resetToken?: string,
+    resetTokenExpiration?: Date,
 }
 
 const userSchema = new Schema<IUser>({
@@ -45,6 +47,8 @@ const userSchema = new Schema<IUser>({
     accountNumber: {type: String},
     bankName: {type: String},   
     accountName: {type: String},
+    resetToken: {type: String},
+    resetTokenExpiration: {type: Date},
 },
 {
     timestamps: true,

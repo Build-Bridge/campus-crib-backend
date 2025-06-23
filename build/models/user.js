@@ -51,6 +51,8 @@ const userSchema = new mongoose_1.Schema({
     accountNumber: { type: String },
     bankName: { type: String },
     accountName: { type: String },
+    resetToken: { type: String },
+    resetTokenExpiration: { type: Date },
 }, {
     timestamps: true,
 });
