@@ -217,7 +217,7 @@ export class UserServices {
             });
 
             return {
-                payload: null,
+                payload: {},
                 message: "Password reset successfully"
             };
         } catch (err: any) {

@@ -216,7 +216,7 @@ let UserServices = class UserServices {
                     resetTokenExpiration: null
                 });
                 return {
-                    payload: null,
+                    payload: {},
                     message: "Password reset successfully"
                 };
             }
