@@ -17,7 +17,16 @@ export interface IHostel extends Document{
     isAvailable: Boolean,
     hostelName: string,
     hostelType: HostelTypes,
-    cover: string
+    cover: string,
+    // Subscription-based features
+    isPriorityListing?: boolean,
+    isFeatured?: boolean,
+    views?: number,
+    inquiries?: number,
+    promoCode?: string,
+    discountPercentage?: number,
+    createdAt: Date,
+    updatedAt: Date
 }
 
 const hostelSchema = new Schema<IHostel>({
@@ -32,6 +41,13 @@ const hostelSchema = new Schema<IHostel>({
     hostelName: {type: String, required: true},
     hostelType: {type: String, enum: Object.values(HostelTypes), default: HostelTypes.SINGLE_ROOMS},
     cover: {type: String},
+    // Subscription-based features
+    isPriorityListing: { type: Boolean, default: false },
+    isFeatured: { type: Boolean, default: false },
+    views: { type: Number, default: 0 },
+    inquiries: { type: Number, default: 0 },
+    promoCode: { type: String },
+    discountPercentage: { type: Number, min: 0, max: 100 },
 },
 {
     timestamps: true,

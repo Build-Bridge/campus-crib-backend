@@ -122,6 +122,122 @@ class HostelServices {
             throw new Error(err.message);
         }
     }
+
+    // Fetch recommended hostels: location in Harmony, Kofesu, Accord (regex), price < 200000
+    async getRecommendedHostels() {
+        try {
+            const filters: any = {
+                location: { $regex: /(Harmony|Kofesu|Accord)/i },
+                price: { $lt: 200000 }
+            };
+            const hostels = await this.repository.find(filters);
+            return {
+                payload: hostels,
+                message: "Recommended Hostels Retrieved Successfully",
+            };
+        } catch (err: any) {
+            throw new Error(err.message);
+        }
+    }
+
+    // Fetch nearby hostels: location in Harmony, Kofesu, Accord (regex)
+    async getNearbyHostels() {
+        try {
+            const filters: any = {
+                location: { $regex: /(Harmony|Kofesu|Accord)/i }
+            };
+            const hostels = await this.repository.find(filters);
+            return {
+                payload: hostels,
+                message: "Nearby Hostels Retrieved Successfully",
+            };
+        } catch (err: any) {
+            throw new Error(err.message);
+        }
+    }
+
+    // Fetch affordable hostels: price < 170000
+    async getAffordableHostels() {
+        try {
+            const filters: any = {
+                price: { $lt: 170000 }
+            };
+            const hostels = await this.repository.find(filters);
+            return {
+                payload: hostels,
+                message: "Affordable Hostels Retrieved Successfully",
+            };
+        } catch (err: any) {
+            throw new Error(err.message);
+        }
+    }
+
+    // Promote hostel (subscription feature)
+    async promoteHostel(id: string) {
+        try {
+            const hostel = await this.repository.findOne({ _id: id });
+            if (!hostel) {
+                throw new Error("Hostel not found");
+            }
+
+            hostel.isPriorityListing = true;
+            const updatedHostel = await this.repository.update({ _id: id }, hostel);
+            
+            return {
+                payload: updatedHostel,
+                message: "Hostel promoted successfully",
+            };
+        } catch (err: any) {
+            throw new Error(err.message);
+        }
+    }
+
+    // Feature hostel (subscription feature)
+    async featureHostel(id: string) {
+        try {
+            const hostel = await this.repository.findOne({ _id: id });
+            if (!hostel) {
+                throw new Error("Hostel not found");
+            }
+
+            hostel.isFeatured = true;
+            const updatedHostel = await this.repository.update({ _id: id }, hostel);
+            
+            return {
+                payload: updatedHostel,
+                message: "Hostel featured successfully",
+            };
+        } catch (err: any) {
+            throw new Error(err.message);
+        }
+    }
+
+    // Get hostel analytics (subscription feature)
+    async getHostelAnalytics(id: string) {
+        try {
+            const hostel = await this.repository.findOne({ _id: id });
+            if (!hostel) {
+                throw new Error("Hostel not found");
+            }
+
+            const analytics = {
+                hostelId: hostel._id,
+                hostelName: hostel.hostelName,
+                views: hostel.views || 0,
+                inquiries: hostel.inquiries || 0,
+                createdAt: hostel.createdAt,
+                isPriorityListing: hostel.isPriorityListing,
+                isFeatured: hostel.isFeatured
+            };
+            
+            return {
+                payload: analytics,
+                message: "Hostel analytics retrieved successfully",
+            };
+        } catch (err: any) {
+            throw new Error(err.message);
+        }
+    }
 }
 
 export default HostelServices;

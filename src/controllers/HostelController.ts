@@ -63,6 +63,69 @@ class HostelController {
             errorResponse(err.message, res);
         }
     }
+
+    // Get recommended hostels
+    async getRecommendedHostels(req: Request, res: Response) {
+        try {
+            const response = await this.service.getRecommendedHostels();
+            successResponse(response, res);
+        } catch (err: any) {
+            errorResponse(err.message, res);
+        }
+    }
+
+    // Get nearby hostels
+    async getNearbyHostels(req: Request, res: Response) {
+        try {
+            const response = await this.service.getNearbyHostels();
+            successResponse(response, res);
+        } catch (err: any) {
+            errorResponse(err.message, res);
+        }
+    }
+
+    // Get affordable hostels
+    async getAffordableHostels(req: Request, res: Response) {
+        try {
+            const response = await this.service.getAffordableHostels();
+            successResponse(response, res);
+        } catch (err: any) {
+            errorResponse(err.message, res);
+        }
+    }
+
+    // Promote hostel (subscription feature)
+    async promoteHostel(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+            const response = await this.service.promoteHostel(id);
+            successResponse(response, res);
+        } catch (err: any) {
+            errorResponse(err.message, res);
+        }
+    }
+
+    // Feature hostel (subscription feature)
+    async featureHostel(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+            const response = await this.service.featureHostel(id);
+            successResponse(response, res);
+        } catch (err: any) {
+            errorResponse(err.message, res);
+        }
+    }
+
+    // Get hostel analytics (subscription feature)
+    async getHostelAnalytics(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+            const response = await this.service.getHostelAnalytics(id);
+            successResponse(response, res);
+        } catch (err: any) {
+            errorResponse(err.message, res);
+        }
+    }
 }
 
 export default HostelController;

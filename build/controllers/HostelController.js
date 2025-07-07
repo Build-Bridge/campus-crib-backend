@@ -95,6 +95,81 @@ let HostelController = class HostelController {
             }
         });
     }
+    // Get recommended hostels
+    getRecommendedHostels(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield this.service.getRecommendedHostels();
+                (0, response_1.successResponse)(response, res);
+            }
+            catch (err) {
+                (0, response_1.errorResponse)(err.message, res);
+            }
+        });
+    }
+    // Get nearby hostels
+    getNearbyHostels(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield this.service.getNearbyHostels();
+                (0, response_1.successResponse)(response, res);
+            }
+            catch (err) {
+                (0, response_1.errorResponse)(err.message, res);
+            }
+        });
+    }
+    // Get affordable hostels
+    getAffordableHostels(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield this.service.getAffordableHostels();
+                (0, response_1.successResponse)(response, res);
+            }
+            catch (err) {
+                (0, response_1.errorResponse)(err.message, res);
+            }
+        });
+    }
+    // Promote hostel (subscription feature)
+    promoteHostel(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const response = yield this.service.promoteHostel(id);
+                (0, response_1.successResponse)(response, res);
+            }
+            catch (err) {
+                (0, response_1.errorResponse)(err.message, res);
+            }
+        });
+    }
+    // Feature hostel (subscription feature)
+    featureHostel(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const response = yield this.service.featureHostel(id);
+                (0, response_1.successResponse)(response, res);
+            }
+            catch (err) {
+                (0, response_1.errorResponse)(err.message, res);
+            }
+        });
+    }
+    // Get hostel analytics (subscription feature)
+    getHostelAnalytics(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const response = yield this.service.getHostelAnalytics(id);
+                (0, response_1.successResponse)(response, res);
+            }
+            catch (err) {
+                (0, response_1.errorResponse)(err.message, res);
+            }
+        });
+    }
 };
 HostelController = __decorate([
     (0, typedi_1.Service)(),

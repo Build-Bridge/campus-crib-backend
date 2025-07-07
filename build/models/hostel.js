@@ -44,6 +44,13 @@ const hostelSchema = new mongoose_1.Schema({
     hostelName: { type: String, required: true },
     hostelType: { type: String, enum: Object.values(HostelTypes), default: HostelTypes.SINGLE_ROOMS },
     cover: { type: String },
+    // Subscription-based features
+    isPriorityListing: { type: Boolean, default: false },
+    isFeatured: { type: Boolean, default: false },
+    views: { type: Number, default: 0 },
+    inquiries: { type: Number, default: 0 },
+    promoCode: { type: String },
+    discountPercentage: { type: Number, min: 0, max: 100 },
 }, {
     timestamps: true,
 });

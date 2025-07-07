@@ -41,7 +41,7 @@ let NotificationRepository = class NotificationRepository extends BaseRepository
     }
     findNotificationsByUser(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield notification_1.default.find({ user: userId }).exec();
+            return yield notification_1.default.find({ user: userId }).sort({ createdAt: -1 }).exec();
         });
     }
     updateNotification(notificationId, updateData) {

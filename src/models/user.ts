@@ -1,4 +1,5 @@
 import mongoose, {Document, Schema, Types} from "mongoose";
+import { SubscriptionPlan } from "./subscription";
 
 enum UserType{
     BASIC = "BASIC",
@@ -23,6 +24,16 @@ export interface IUser extends Document{
     accountName: string,
     resetToken?: string,
     resetTokenExpiration?: Date,
+    // Subscription related fields
+    currentSubscription?: Types.ObjectId,
+    subscriptionPlan?: SubscriptionPlan,
+    subscriptionStatus?: 'active' | 'inactive' | 'cancelled' | 'expired',
+    subscriptionEndDate?: Date,
+    // Agent specific fields
+    agentRating?: number,
+    agentReviews?: number,
+    isVerifiedAgent?: boolean,
+    featuredAgent?: boolean,
 }
 
 const userSchema = new Schema<IUser>({
@@ -49,6 +60,16 @@ const userSchema = new Schema<IUser>({
     accountName: {type: String},
     resetToken: {type: String},
     resetTokenExpiration: {type: Date},
+    // Subscription related fields
+    currentSubscription: { type: Schema.Types.ObjectId, ref: "Subscription" },
+    subscriptionPlan: { type: String, enum: Object.values(SubscriptionPlan) },
+    subscriptionStatus: { type: String, enum: ['active', 'inactive', 'cancelled', 'expired'], default: 'inactive' },
+    subscriptionEndDate: { type: Date },
+    // Agent specific fields
+    agentRating: { type: Number, default: 0 },
+    agentReviews: { type: Number, default: 0 },
+    isVerifiedAgent: { type: Boolean, default: false },
+    featuredAgent: { type: Boolean, default: false },
 },
 {
     timestamps: true,

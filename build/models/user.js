@@ -24,6 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
+const subscription_1 = require("./subscription");
 var UserType;
 (function (UserType) {
     UserType["BASIC"] = "BASIC";
@@ -53,6 +54,16 @@ const userSchema = new mongoose_1.Schema({
     accountName: { type: String },
     resetToken: { type: String },
     resetTokenExpiration: { type: Date },
+    // Subscription related fields
+    currentSubscription: { type: mongoose_1.Schema.Types.ObjectId, ref: "Subscription" },
+    subscriptionPlan: { type: String, enum: Object.values(subscription_1.SubscriptionPlan) },
+    subscriptionStatus: { type: String, enum: ['active', 'inactive', 'cancelled', 'expired'], default: 'inactive' },
+    subscriptionEndDate: { type: Date },
+    // Agent specific fields
+    agentRating: { type: Number, default: 0 },
+    agentReviews: { type: Number, default: 0 },
+    isVerifiedAgent: { type: Boolean, default: false },
+    featuredAgent: { type: Boolean, default: false },
 }, {
     timestamps: true,
 });

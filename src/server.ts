@@ -11,10 +11,13 @@ import inspectionRoutes from "./routes/inspectionRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
 import reviewRoutes from "./routes/ReviewRoutes";
 import roommateRequestRoutes from "./routes/roommateRequestRoutes";
+import subscriptionRoutes from "./routes/subscriptionRoutes";
+import paymentRoutes from "./routes/paymentRoutes";
 import SocketServices from './services/SocketServices';
 import { initSocket } from './config/socket';
 import { createServer } from "http";
 import Container from 'typedi';
+import { CronService } from './services/CronService';
 
 const app = express();
 // Create HTTP server
@@ -25,6 +28,10 @@ initSocket(httpServer); // Initialize Socket.IO with the server
 // Initialize SocketServices after Socket.IO
 const socketServices = Container.get(SocketServices)
 socketServices.initialize();
+
+// Initialize CronService for subscription management
+const cronService = Container.get(CronService);
+cronService.startCronJobs();
 
 const port = process.env.PORT || 3050;
 
@@ -46,6 +53,8 @@ app.use("/inspections", inspectionRoutes);
 app.use("/notifications", notificationRoutes);
 app.use("/reviews", reviewRoutes);
 app.use("/roommate-requests", roommateRequestRoutes);
+app.use("/subscriptions", subscriptionRoutes);
+app.use("/payments", paymentRoutes);
 
 httpServer.listen(port, () => {
   console.log(`Server running on port ${port}`);

@@ -18,7 +18,7 @@ class NotificationRepository extends BaseRepository<INotification> {
     }
 
     async findNotificationsByUser(userId: string): Promise<INotification[]> {
-        return await Notifications.find({ user: userId }).exec();
+        return await Notifications.find({ user: userId }).sort({ createdAt: -1 }).exec();
     }
 
     async updateNotification(notificationId: string, updateData: Partial<INotification>): Promise<INotification | null> {

@@ -16,10 +16,13 @@ const inspectionRoutes_1 = __importDefault(require("./routes/inspectionRoutes"))
 const notificationRoutes_1 = __importDefault(require("./routes/notificationRoutes"));
 const ReviewRoutes_1 = __importDefault(require("./routes/ReviewRoutes"));
 const roommateRequestRoutes_1 = __importDefault(require("./routes/roommateRequestRoutes"));
+const subscriptionRoutes_1 = __importDefault(require("./routes/subscriptionRoutes"));
+const paymentRoutes_1 = __importDefault(require("./routes/paymentRoutes"));
 const SocketServices_1 = __importDefault(require("./services/SocketServices"));
 const socket_1 = require("./config/socket");
 const http_1 = require("http");
 const typedi_1 = __importDefault(require("typedi"));
+const CronService_1 = require("./services/CronService");
 const app = (0, express_1.default)();
 // Create HTTP server
 const httpServer = (0, http_1.createServer)(app);
@@ -28,6 +31,9 @@ const httpServer = (0, http_1.createServer)(app);
 // Initialize SocketServices after Socket.IO
 const socketServices = typedi_1.default.get(SocketServices_1.default);
 socketServices.initialize();
+// Initialize CronService for subscription management
+const cronService = typedi_1.default.get(CronService_1.CronService);
+cronService.startCronJobs();
 const port = process.env.PORT || 3050;
 // Set up your routes and middleware here
 app.use((0, cors_1.default)({ origin: "*" }));
@@ -45,6 +51,8 @@ app.use("/inspections", inspectionRoutes_1.default);
 app.use("/notifications", notificationRoutes_1.default);
 app.use("/reviews", ReviewRoutes_1.default);
 app.use("/roommate-requests", roommateRequestRoutes_1.default);
+app.use("/subscriptions", subscriptionRoutes_1.default);
+app.use("/payments", paymentRoutes_1.default);
 httpServer.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });

@@ -147,6 +147,128 @@ let HostelServices = class HostelServices {
             }
         });
     }
+    // Fetch recommended hostels: location in Harmony, Kofesu, Accord (regex), price < 200000
+    getRecommendedHostels() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const filters = {
+                    location: { $regex: /(Harmony|Kofesu|Accord)/i },
+                    price: { $lt: 200000 }
+                };
+                const hostels = yield this.repository.find(filters);
+                return {
+                    payload: hostels,
+                    message: "Recommended Hostels Retrieved Successfully",
+                };
+            }
+            catch (err) {
+                throw new Error(err.message);
+            }
+        });
+    }
+    // Fetch nearby hostels: location in Harmony, Kofesu, Accord (regex)
+    getNearbyHostels() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const filters = {
+                    location: { $regex: /(Harmony|Kofesu|Accord)/i }
+                };
+                const hostels = yield this.repository.find(filters);
+                return {
+                    payload: hostels,
+                    message: "Nearby Hostels Retrieved Successfully",
+                };
+            }
+            catch (err) {
+                throw new Error(err.message);
+            }
+        });
+    }
+    // Fetch affordable hostels: price < 170000
+    getAffordableHostels() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const filters = {
+                    price: { $lt: 170000 }
+                };
+                const hostels = yield this.repository.find(filters);
+                return {
+                    payload: hostels,
+                    message: "Affordable Hostels Retrieved Successfully",
+                };
+            }
+            catch (err) {
+                throw new Error(err.message);
+            }
+        });
+    }
+    // Promote hostel (subscription feature)
+    promoteHostel(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const hostel = yield this.repository.findOne({ _id: id });
+                if (!hostel) {
+                    throw new Error("Hostel not found");
+                }
+                hostel.isPriorityListing = true;
+                const updatedHostel = yield this.repository.update({ _id: id }, hostel);
+                return {
+                    payload: updatedHostel,
+                    message: "Hostel promoted successfully",
+                };
+            }
+            catch (err) {
+                throw new Error(err.message);
+            }
+        });
+    }
+    // Feature hostel (subscription feature)
+    featureHostel(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const hostel = yield this.repository.findOne({ _id: id });
+                if (!hostel) {
+                    throw new Error("Hostel not found");
+                }
+                hostel.isFeatured = true;
+                const updatedHostel = yield this.repository.update({ _id: id }, hostel);
+                return {
+                    payload: updatedHostel,
+                    message: "Hostel featured successfully",
+                };
+            }
+            catch (err) {
+                throw new Error(err.message);
+            }
+        });
+    }
+    // Get hostel analytics (subscription feature)
+    getHostelAnalytics(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const hostel = yield this.repository.findOne({ _id: id });
+                if (!hostel) {
+                    throw new Error("Hostel not found");
+                }
+                const analytics = {
+                    hostelId: hostel._id,
+                    hostelName: hostel.hostelName,
+                    views: hostel.views || 0,
+                    inquiries: hostel.inquiries || 0,
+                    createdAt: hostel.createdAt,
+                    isPriorityListing: hostel.isPriorityListing,
+                    isFeatured: hostel.isFeatured
+                };
+                return {
+                    payload: analytics,
+                    message: "Hostel analytics retrieved successfully",
+                };
+            }
+            catch (err) {
+                throw new Error(err.message);
+            }
+        });
+    }
 };
 HostelServices = __decorate([
     (0, typedi_1.Service)(),
