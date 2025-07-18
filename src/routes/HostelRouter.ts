@@ -7,21 +7,23 @@ import { checkSubscriptionLimit, checkSubscriptionFeature } from "../middlewares
 const router = Router();
 const hostelController = Container.get(HostelController);
 
+// Public routes
+router.get("/recommended", (req, res) => hostelController.getRecommendedHostels(req, res));
+router.get("/nearby", (req, res) => hostelController.getNearbyHostels(req, res));
+router.get("/affordable", (req, res) => hostelController.getAffordableHostels(req, res));
+
 // Create hostel with subscription limit check
 router.post("/", verifyAuth, checkSubscriptionLimit, (req, res, next) => hostelController.createHostel(req, res));
 
 // Get hostels (no subscription check needed)
-router.get("/", verifyAuth, (req, res) => hostelController.getAllHostels(req, res));
-router.get("/:id", verifyAuth, (req, res) => hostelController.getHostelById(req, res));
+router.get("/", (req, res) => hostelController.getAllHostels(req, res));
+router.get("/:id", (req, res) => hostelController.getHostelById(req, res));
 
 // Update and delete hostels (no subscription check needed)
 router.put("/:id", verifyAuth, (req, res) => hostelController.updateHostel(req, res));
 router.delete("/:id", verifyAuth, (req, res) => hostelController.deleteHostel(req, res));
 
-// Public routes
-router.get("/recommended", (req, res) => hostelController.getRecommendedHostels(req, res));
-router.get("/nearby", (req, res) => hostelController.getNearbyHostels(req, res));
-router.get("/affordable", (req, res) => hostelController.getAffordableHostels(req, res));
+
 
 // Subscription-based features
 router.post("/:id/promote", verifyAuth, checkSubscriptionFeature('priorityListing'), (req, res) => hostelController.promoteHostel(req, res));
