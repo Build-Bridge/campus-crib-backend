@@ -11,6 +11,7 @@ const hostelController = Container.get(HostelController);
 router.get("/recommended", (req, res) => hostelController.getRecommendedHostels(req, res));
 router.get("/nearby", (req, res) => hostelController.getNearbyHostels(req, res));
 router.get("/affordable", (req, res) => hostelController.getAffordableHostels(req, res));
+router.get("/premium-picks", (req, res) => hostelController.getPremiumPicks(req, res));
 
 // Create hostel with subscription limit check
 router.post("/", verifyAuth, checkSubscriptionLimit, (req, res, next) => hostelController.createHostel(req, res));

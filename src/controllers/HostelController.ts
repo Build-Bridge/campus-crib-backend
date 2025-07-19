@@ -126,6 +126,16 @@ class HostelController {
             errorResponse(err.message, res);
         }
     }
+
+    // Get premium picks hostels
+    async getPremiumPicks(req: Request, res: Response) {
+        try {
+            const response = await this.service.getPremiumPicks();
+            successResponse(response, res);
+        } catch (err: any) {
+            errorResponse(err.message, res);
+        }
+    }
 }
 
 export default HostelController;

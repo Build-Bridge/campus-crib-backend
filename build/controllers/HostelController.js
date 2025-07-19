@@ -170,6 +170,18 @@ let HostelController = class HostelController {
             }
         });
     }
+    // Get premium picks hostels
+    getPremiumPicks(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield this.service.getPremiumPicks();
+                (0, response_1.successResponse)(response, res);
+            }
+            catch (err) {
+                (0, response_1.errorResponse)(err.message, res);
+            }
+        });
+    }
 };
 HostelController = __decorate([
     (0, typedi_1.Service)(),

@@ -38,6 +38,18 @@ class HostelServices {
         try {
             const filters: any = {};
 
+            // Add search functionality across all fields
+            if (query.query) {
+                const searchRegex = { $regex: query.query, $options: "i" };
+                filters.$or = [
+                    { hostelName: searchRegex },
+                    { description: searchRegex },
+                    { location: searchRegex },
+                    { hostelType: searchRegex },
+                    { features: searchRegex }
+                ];
+            }
+
             // Add filters based on query parameters
             if (query.hostelName) filters.hostelName = { $regex: query.hostelName, $options: "i" };
             if (query.location) filters.location = { $regex: query.location, $options: "i" };
@@ -233,6 +245,23 @@ class HostelServices {
             return {
                 payload: analytics,
                 message: "Hostel analytics retrieved successfully",
+            };
+        } catch (err: any) {
+            throw new Error(err.message);
+        }
+    }
+
+    // Fetch premium picks hostels: location in Harmony or Accord (regex), price >= 300000
+    async getPremiumPicks() {
+        try {
+            const filters: any = {
+                location: { $regex: /(Harmony|Accord)/i },
+                price: { $gte: 300000 }
+            };
+            const hostels = await this.repository.find(filters);
+            return {
+                payload: hostels,
+                message: "Premium Picks Retrieved Successfully",
             };
         } catch (err: any) {
             throw new Error(err.message);
