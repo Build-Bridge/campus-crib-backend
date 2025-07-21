@@ -88,6 +88,31 @@ let ChatService = class ChatService {
             return { payload: populatedConversations, message: "Successful" };
         });
     }
+    getConversationMessagesByUser(userId, otherUserId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // Check if both users exist
+            const currentUser = yield user_1.default.findById(userId);
+            const otherUser = yield user_1.default.findById(otherUserId);
+            if (!currentUser) {
+                throw new Error("Current user doesn't exist");
+            }
+            if (!otherUser) {
+                throw new Error("Other user doesn't exist");
+            }
+            // Get messages by participants
+            const messages = yield this.chatRepo.getMessagesByParticipants(userId, otherUserId);
+            // Get conversation details
+            const conversation = yield this.chatRepo.findConversationByParticipants(userId, otherUserId);
+            return {
+                payload: {
+                    messages,
+                    otherUser,
+                    conversation: conversation || null
+                },
+                message: "Successful"
+            };
+        });
+    }
 };
 ChatService = __decorate([
     (0, typedi_1.Service)(),

@@ -82,6 +82,34 @@ class ChatService {
 
     return { payload: populatedConversations, message: "Successful" };
   }
+
+  async getConversationMessagesByUser(userId: string, otherUserId: string) {
+    // Check if both users exist
+    const currentUser = await Users.findById(userId);
+    const otherUser = await Users.findById(otherUserId);
+    
+    if (!currentUser) {
+      throw new Error("Current user doesn't exist");
+    }
+    if (!otherUser) {
+      throw new Error("Other user doesn't exist");
+    }
+
+    // Get messages by participants
+    const messages = await this.chatRepo.getMessagesByParticipants(userId, otherUserId);
+    
+    // Get conversation details
+    const conversation = await this.chatRepo.findConversationByParticipants(userId, otherUserId);
+
+    return { 
+      payload: { 
+        messages, 
+        otherUser,
+        conversation: conversation || null 
+      }, 
+      message: "Successful" 
+    };
+  }
 }
 
 export default ChatService;

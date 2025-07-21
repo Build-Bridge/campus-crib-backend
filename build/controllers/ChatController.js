@@ -67,6 +67,19 @@ let ChatController = class ChatController {
             }
         });
     }
+    getConversationMessagesByUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { otherUserId } = req.params;
+                const currentUserId = req.body.user; // From verifyAuth middleware
+                const response = yield this.chatService.getConversationMessagesByUser(currentUserId, otherUserId);
+                (0, response_1.successResponse)(response, res);
+            }
+            catch (err) {
+                (0, response_1.errorResponse)(err.message, res);
+            }
+        });
+    }
 };
 ChatController = __decorate([
     (0, typedi_1.Service)(),

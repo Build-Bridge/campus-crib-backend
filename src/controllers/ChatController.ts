@@ -39,6 +39,17 @@ class ChatController {
             errorResponse(err.message, res);
         }
     }
+
+    async getConversationMessagesByUser(req: Request, res: Response) {
+        try {
+            const { otherUserId } = req.params;
+            const currentUserId = req.body.user; // From verifyAuth middleware
+            const response = await this.chatService.getConversationMessagesByUser(currentUserId, otherUserId);
+            successResponse(response, res);
+        } catch (err: any) {
+            errorResponse(err.message, res);
+        }
+    }
 }
 
 export default ChatController;

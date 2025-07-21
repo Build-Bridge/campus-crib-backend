@@ -80,6 +80,22 @@ let ChatRepository = class ChatRepository {
             });
         });
     }
+    findConversationByParticipants(userId1, userId2) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield chatConversation_1.default.findOne({
+                participants: { $all: [userId1, userId2] },
+            });
+        });
+    }
+    getMessagesByParticipants(userId1, userId2) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const conversation = yield this.findConversationByParticipants(userId1, userId2);
+            if (!conversation) {
+                return [];
+            }
+            return yield chatMessages_1.default.find({ conversationId: conversation._id }).sort({ timestamp: 1 });
+        });
+    }
 };
 ChatRepository = __decorate([
     (0, typedi_1.Service)()

@@ -9,5 +9,6 @@ const chatController = Container.get(ChatController);
 router.post("/message", verifyAuth, (req, res) => chatController.sendMessage(req, res));
 router.get("/conversation/:conversationId", verifyAuth, (req, res) => chatController.getConversationMessages(req, res));
 router.get("/conversations", verifyAuth, (req, res) => chatController.getUserConversations(req, res));
+router.get("/conversation/user/:otherUserId", verifyAuth, (req, res) => chatController.getConversationMessagesByUser(req, res));
 
 export default router;
